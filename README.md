@@ -13,3 +13,13 @@
 ![no-cyclic-dependency](https://img.shields.io/badge/cyclic-dependency-red.svg)
 ![annotation-rate](https://img.shields.io/badge/annotation-rate-red.svg)
 ![(api/core)-lib](https://img.shields.io/badge/(api/core)-lib-red.svg)
+
+Benchmark:
+
+Benchmark                                                                                                       Mode  Cnt         Score        Error  
+
+JdkRingBufferBenchmark.throughputSimple(ArrayBlockingQueue)                   thrpt    5  31797526.910 ± 654667.370  ops/s
+
+JdkRingBufferBenchmark.throughputSimple2(JdkRingBufferBlockingQueue)    thrpt    5  27984910.583 ± 494689.576  ops/s
+
+JdkRingBufferBenchmark.throughputSimple3(DisruptorBlockingQueue)            thrpt    5  32313551.469 ± 343377.610  ops/s
