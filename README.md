@@ -16,7 +16,10 @@
 
 Benchmark:
 
-Benchmark                                                                                                       Mode  Cnt         Score        Error  Units
+Benchmark                                                                                                       Mode  Cnt         Score        Error  
+
 JdkRingBufferBenchmark.throughputSimple(ArrayBlockingQueue)                   thrpt    5  31797526.910 ± 654667.370  ops/s
+
 JdkRingBufferBenchmark.throughputSimple2(JdkRingBufferBlockingQueue)    thrpt    5  27984910.583 ± 494689.576  ops/s
+
 JdkRingBufferBenchmark.throughputSimple3(DisruptorBlockingQueue)            thrpt    5  32313551.469 ± 343377.610  ops/s
