@@ -90,7 +90,7 @@
       <artifactId>jctools-core</artifactId>
       <groupId>org.jctools</groupId>
       <optional>true</optional>
-      <version>2.1.2</version>
+      <version>3.3.0</version>
     </dependency>
   </dependencies>
   <modelVersion>4.0.0</modelVersion>
