@@ -8,7 +8,7 @@ package org.jdkstack.jdkringbuffer.core;
  * @author admin
  * @param <E> e.
  */
-public class JdkRingBufferBlockingQueue<E> extends AbstractRingBufferBlockingQueue<E> {
+public class JdkRingBufferBlockingQueueV2<E> extends AbstractRingBufferBlockingQueueV2<E> {
 
   /**
    * This is a method description.
@@ -17,8 +17,8 @@ public class JdkRingBufferBlockingQueue<E> extends AbstractRingBufferBlockingQue
    *
    * @author admin
    */
-  public JdkRingBufferBlockingQueue() {
-    super();
+  public JdkRingBufferBlockingQueueV2() {
+    super(Constants.CAPACITY);
   }
 
   /**
@@ -27,11 +27,12 @@ public class JdkRingBufferBlockingQueue<E> extends AbstractRingBufferBlockingQue
    * <p>Another description after blank line.
    *
    * @author admin
-   * @param capacity capacity.
+   * @param capacity e.
    */
-  public JdkRingBufferBlockingQueue(final int capacity) {
+  public JdkRingBufferBlockingQueueV2(final int capacity) {
     super(capacity);
   }
+
 
   /**
    * This is a method description.
@@ -43,12 +44,11 @@ public class JdkRingBufferBlockingQueue<E> extends AbstractRingBufferBlockingQue
    */
   @Override
   public void put(final E e) throws InterruptedException {
-    // 循环向环形数组插入数据,直到能插入为止.
     while (!offer(e)) {
-      // 如果不能插入,则进行等待.
       fullAwait();
     }
   }
+
 
   /**
    * This is a method description.
@@ -56,19 +56,15 @@ public class JdkRingBufferBlockingQueue<E> extends AbstractRingBufferBlockingQue
    * <p>Another description after blank line.
    *
    * @author admin
-   * @return E e.
+   * @return boolean e.
    */
   @Override
   public E take() throws InterruptedException {
-    // 循环从环形数组中获取元素,直到能获取到为止.
     while (true) {
-      // 拿到一个元素.
       E e = poll();
-      // 如果元素不为空,返回元素.
       if (e != null) {
         return e;
       } else {
-        // 如果元素为空,则等待.
         emptyAwait();
       }
     }
