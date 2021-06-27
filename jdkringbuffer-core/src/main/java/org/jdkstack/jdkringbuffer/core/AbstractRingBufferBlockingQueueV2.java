@@ -18,56 +18,68 @@ import org.jdkstack.jdkringbuffer.api.RingBufferBlockingQueue;
  * @param <E> e .
  */
 @SuppressWarnings("java:S134")
-public abstract class AbstractRingBufferBlockingQueue<E> extends AbstractQueue<E>
+public abstract class AbstractRingBufferBlockingQueueV2<E> extends AbstractQueue<E>
     implements BlockingQueue<E>, RingBufferBlockingQueue<E> {
   /** 环形数组的容量. */
   private final int capacity;
-  /** 环形数组. */
-  private final E[] ringBuffer;
-  /** 环形数组入队时,当前元素的坐标. */
+  /** 环形数组的下标. */
   private final int index;
-  /** 环形数组入队时,总共入队了多少个元素. */
-  private final AtomicInteger tail = new AtomicInteger();
-  /** 环形数组入队时,是否被其他线程抢先放入了值. */
-  private final AtomicInteger tailLock = new AtomicInteger(0);
-  /** 环形数组出队时,总共出队了多少个元素. */
-  private final AtomicInteger head = new AtomicInteger();
-  /** 环形数组出队时,是否被其他线程抢先获取了值. */
-  private final AtomicInteger headLock = new AtomicInteger(0);
-
-  protected AbstractRingBufferBlockingQueue() {
-    this(Constants.CAPACITY);
-  }
-
-  @SuppressWarnings("unchecked")
-  protected AbstractRingBufferBlockingQueue(final int capacity) {
-    this.capacity = capacity;
-    this.index = capacity - 1;
-    this.ringBuffer = (E[]) new Object[capacity];
-  }
+  /** 环形数组. */
+  private final Entry<E>[] buffer;
+  /** 环形数组消费总元素数量. */
+  private final AtomicInteger head = new AtomicInteger(0);
+  /** 环形数组生产总元素数量. */
+  private final AtomicInteger tail = new AtomicInteger(0);
 
   /**
-   * This is a class description.
+   * This is a method description.
    *
    * <p>Another description after blank line.
    *
    * @author admin
-   * @param e e .
-   * @return boolean b.
+   */
+  protected AbstractRingBufferBlockingQueueV2() {
+    this(Constants.CAPACITY);
+  }
+
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   * @param capacity e.
+   */
+  @SuppressWarnings("unchecked")
+  protected AbstractRingBufferBlockingQueueV2(final int capacity) {
+    this.capacity = capacity;
+    index = capacity - 1;
+    buffer = new Entry[capacity];
+    for (int i = 0; i < capacity; i++) {
+      buffer[i] = new Entry<>(i);
+    }
+  }
+
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   * @param e e.
+   * @return boolean e.
    */
   @Override
   public boolean offer(final E e) {
-    // 环形数组一共设置的元素的总个数(自增+1).
     final int tailSeq = this.tail.get();
-    final int queueStart = tailSeq - this.capacity;
+    final Entry<E> cell = buffer[tailSeq & index];
+    final int seq = cell.getSeq();
+    final int dif = seq - tailSeq;
     boolean flag = false;
-    // 检查环形数组是否满了. 检查是否被其他线程修改.
-    if (0 > queueStart || this.head.get() > queueStart) {
-      if (this.tailLock.compareAndSet(tailSeq, tailSeq + 1)) {
-        // 向环形数组设置元素,取模后向对应的下表设置元素.
-        final int tailSlot = tailSeq & index;
-        this.ringBuffer[tailSlot] = e;
-        this.tail.getAndIncrement();
+    if (dif == 0) {
+      if (this.tail.compareAndSet(tailSeq, tailSeq + 1)) {
+        cell.setEntry(e);
+        cell.setSeq(tailSeq + 1);
         flag = true;
       } else {
         LockSupport.parkNanos(1L);
@@ -77,12 +89,15 @@ public abstract class AbstractRingBufferBlockingQueue<E> extends AbstractQueue<E
   }
 
   /**
-   * This is a class description.
+   * This is a method description.
    *
    * <p>Another description after blank line.
    *
    * @author admin
-   * @return boolean E e.
+   * @param e e.
+   * @param timeout t.
+   * @param unit u.
+   * @return boolean e.
    */
   @Override
   public boolean offer(final E e, final long timeout, final TimeUnit unit)
@@ -96,23 +111,20 @@ public abstract class AbstractRingBufferBlockingQueue<E> extends AbstractQueue<E
    * <p>Another description after blank line.
    *
    * @author admin
-   * @return E e.
+   * @return boolean e.
    */
   @Override
   public E poll() {
     final int headSeq = this.head.get();
+    final Entry<E> cell = buffer[headSeq & index];
+    final int seq = cell.getSeq();
+    final int dif = seq - (headSeq + 1);
     E e = null;
-    // 检查队列中是否有元素.   检查是否被其他线程修改,如果返回true,则没有修改,可以更新值.
-    if (0 > headSeq || this.tail.get() > headSeq) {
-      if (this.headLock.compareAndSet(headSeq, headSeq + 1)) {
-        // 获取环形数组索引位置.
-        final int bufferIndex = headSeq & index;
-        // 根据索引位置获取元素.
-        e = this.ringBuffer[bufferIndex];
-        // 将索引位置设置为空.
-        this.ringBuffer[bufferIndex] = null;
-        // poll计数.
-        this.head.getAndIncrement();
+    if (dif == 0) {
+      if (this.head.compareAndSet(headSeq, headSeq + 1)) {
+        e = cell.getEntry();
+        cell.setEntry(null);
+        cell.setSeq(headSeq + index + 1);
       } else {
         LockSupport.parkNanos(1L);
       }
@@ -121,7 +133,7 @@ public abstract class AbstractRingBufferBlockingQueue<E> extends AbstractQueue<E
   }
 
   /**
-   * This is a class description.
+   * This is a method description.
    *
    * <p>Another description after blank line.
    *
@@ -133,61 +145,29 @@ public abstract class AbstractRingBufferBlockingQueue<E> extends AbstractQueue<E
     throw new UnsupportedOperationException("未实现.");
   }
 
-  /**
-   * This is a class description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @author admin
-   * @return E e.
-   */
   @Override
   public final E peek() {
-    return ringBuffer[head.get() & index];
+    return buffer[head.get() & index].getEntry();
   }
 
-  /**
-   * This is a class description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @author admin
-   * @return int e.
-   */
   @Override
   public final int size() {
     return Math.max(tail.get() - head.get(), 0);
   }
 
-  /**
-   * This is a class description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @author admin
-   * @return boolean e.
-   */
   @Override
   public final boolean isEmpty() {
-    return tail.get() == head.get();
+    return head.get() == tail.get();
   }
 
-  /**
-   * This is a class description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @author admin
-   * @return boolean e.
-   */
   @Override
-  public boolean isFull() {
+  public final boolean isFull() {
     final int queueStart = tail.get() - capacity;
     return head.get() == queueStart;
   }
 
   /**
-   * This is a class description.
+   * This is a method description.
    *
    * <p>Another description after blank line.
    *
@@ -200,7 +180,7 @@ public abstract class AbstractRingBufferBlockingQueue<E> extends AbstractQueue<E
   }
 
   /**
-   * This is a class description.
+   * This is a method description.
    *
    * <p>Another description after blank line.
    *
@@ -213,7 +193,7 @@ public abstract class AbstractRingBufferBlockingQueue<E> extends AbstractQueue<E
   }
 
   /**
-   * This is a class description.
+   * This is a method description.
    *
    * <p>Another description after blank line.
    *
@@ -226,7 +206,7 @@ public abstract class AbstractRingBufferBlockingQueue<E> extends AbstractQueue<E
   }
 
   /**
-   * This is a class description.
+   * This is a method description.
    *
    * <p>Another description after blank line.
    *
