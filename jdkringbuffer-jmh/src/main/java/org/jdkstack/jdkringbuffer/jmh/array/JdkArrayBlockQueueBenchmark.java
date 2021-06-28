@@ -1,5 +1,6 @@
 package org.jdkstack.jdkringbuffer.jmh.array;
 
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -29,6 +30,7 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 @Warmup(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
 @Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
 public class JdkArrayBlockQueueBenchmark {
+  private final ArrayBlockingQueue<String> queue = new ArrayBlockingQueue<>(1024);
 
   /**
    * This is a method description.
@@ -63,10 +65,29 @@ public class JdkArrayBlockQueueBenchmark {
     //
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
   public void throughputSimple() {
-    //
+    try {
+      queue.put("123");
+    } catch (InterruptedException e) {
+      //
+    }
+    try {
+      String kafkaInfoEvent = queue.take();
+      if (kafkaInfoEvent != null) {
+        //
+      }
+    } catch (InterruptedException e) {
+      //
+    }
   }
 }

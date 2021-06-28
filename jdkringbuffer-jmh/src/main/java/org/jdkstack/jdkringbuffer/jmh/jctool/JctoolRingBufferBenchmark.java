@@ -1,6 +1,8 @@
 package org.jdkstack.jdkringbuffer.jmh.jctool;
 
 import java.util.concurrent.TimeUnit;
+import org.jctools.queues.MessagePassingQueue;
+import org.jctools.queues.MpmcArrayQueue;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Level;
@@ -29,6 +31,7 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 @Warmup(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
 @Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
 public class JctoolRingBufferBenchmark {
+  private final MessagePassingQueue<String> queue = new MpmcArrayQueue<>(1024);
 
   /**
    * This is a method description.
@@ -42,7 +45,7 @@ public class JctoolRingBufferBenchmark {
     Options opt =
         new OptionsBuilder()
             .include(JctoolRingBufferBenchmark.class.getSimpleName())
-            .threads(1)
+            .threads(3)
             .forks(1)
             .build();
     try {
@@ -66,14 +69,11 @@ public class JctoolRingBufferBenchmark {
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
-  public void throughputPut() {
-    //
-  }
-
-  @Benchmark
-  @BenchmarkMode(Mode.Throughput)
-  @OutputTimeUnit(TimeUnit.SECONDS)
-  public void throughputTake() {
-    //
+  public void throughputSimple6() {
+    queue.offer("123");
+    String kafkaInfoEvent = queue.poll();
+    if (kafkaInfoEvent != null) {
+      //
+    }
   }
 }
