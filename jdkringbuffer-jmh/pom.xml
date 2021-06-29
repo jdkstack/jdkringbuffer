@@ -2,7 +2,51 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>jdkringbuffer</artifactId>
+    <groupId>org.jdkstack</groupId>
+    <version>11.0.11</version>
+  </parent>
   <artifactId>jdkringbuffer-jmh</artifactId>
+  <properties>
+    <jmh.version>1.32</jmh.version>
+    <uberjar.name>benchmarks</uberjar.name>
+  </properties>
+  <dependencies>
+    <dependency>
+      <artifactId>jdkringbuffer-core</artifactId>
+      <groupId>org.jdkstack</groupId>
+      <version>11.0.11</version>
+    </dependency>
+    <dependency>
+      <artifactId>disruptor</artifactId>
+      <groupId>com.conversantmedia</groupId>
+      <version>1.2.19</version>
+    </dependency>
+    <dependency>
+      <artifactId>disruptor</artifactId>
+      <groupId>com.lmax</groupId>
+      <version>3.4.4</version>
+    </dependency>
+    <dependency>
+      <artifactId>jmh-core</artifactId>
+      <groupId>org.openjdk.jmh</groupId>
+      <version>${jmh.version}</version>
+    </dependency>
+    <dependency>
+      <artifactId>jmh-generator-annprocess</artifactId>
+      <groupId>org.openjdk.jmh</groupId>
+      <scope>provided</scope>
+      <version>${jmh.version}</version>
+    </dependency>
+    <dependency>
+      <artifactId>jctools-core</artifactId>
+      <groupId>org.jctools</groupId>
+      <optional>true</optional>
+      <version>3.3.0</version>
+    </dependency>
+  </dependencies>
   <build>
     <plugins>
       <plugin>
@@ -60,48 +104,4 @@
       </plugin>
     </plugins>
   </build>
-  <dependencies>
-    <dependency>
-      <artifactId>jdkringbuffer-core</artifactId>
-      <groupId>org.jdkstack</groupId>
-      <version>11.0.11</version>
-    </dependency>
-    <dependency>
-      <artifactId>disruptor</artifactId>
-      <groupId>com.conversantmedia</groupId>
-      <version>1.2.19</version>
-    </dependency>
-    <dependency>
-      <artifactId>disruptor</artifactId>
-      <groupId>com.lmax</groupId>
-      <version>3.4.4</version>
-    </dependency>
-    <dependency>
-      <artifactId>jmh-core</artifactId>
-      <groupId>org.openjdk.jmh</groupId>
-      <version>${jmh.version}</version>
-    </dependency>
-    <dependency>
-      <artifactId>jmh-generator-annprocess</artifactId>
-      <groupId>org.openjdk.jmh</groupId>
-      <scope>provided</scope>
-      <version>${jmh.version}</version>
-    </dependency>
-    <dependency>
-      <artifactId>jctools-core</artifactId>
-      <groupId>org.jctools</groupId>
-      <optional>true</optional>
-      <version>3.3.0</version>
-    </dependency>
-  </dependencies>
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <artifactId>jdkringbuffer</artifactId>
-    <groupId>org.jdkstack</groupId>
-    <version>11.0.11</version>
-  </parent>
-  <properties>
-    <jmh.version>1.32</jmh.version>
-    <uberjar.name>benchmarks</uberjar.name>
-  </properties>
 </project>
