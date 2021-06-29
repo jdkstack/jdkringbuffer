@@ -28,8 +28,8 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
  * @author admin
  */
 @State(Scope.Benchmark)
-@Warmup(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
-@Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
+@Warmup(iterations = 5, time = 1)
+@Measurement(iterations = 5, time = 1)
 public class JctoolRingBufferBenchmark {
   private final MessagePassingQueue<String> queue = new MpmcArrayQueue<>(1024);
 
@@ -41,7 +41,7 @@ public class JctoolRingBufferBenchmark {
    * @author admin
    * @param args args.
    */
-  public static void main(String[] args) {
+  public static void main(String... args) {
     Options opt =
         new OptionsBuilder()
             .include(JctoolRingBufferBenchmark.class.getSimpleName())

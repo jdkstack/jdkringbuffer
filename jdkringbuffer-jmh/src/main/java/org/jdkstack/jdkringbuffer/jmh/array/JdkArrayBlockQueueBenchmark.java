@@ -27,8 +27,8 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
  * @author admin
  */
 @State(Scope.Benchmark)
-@Warmup(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
-@Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
+@Warmup(iterations = 5, time = 1)
+@Measurement(iterations = 5, time = 1)
 public class JdkArrayBlockQueueBenchmark {
   private final ArrayBlockingQueue<String> queue = new ArrayBlockingQueue<>(1024);
 
@@ -40,7 +40,7 @@ public class JdkArrayBlockQueueBenchmark {
    * @author admin
    * @param args args.
    */
-  public static void main(String[] args) {
+  public static void main(String... args) {
     Options opt =
         new OptionsBuilder()
             .include(JdkArrayBlockQueueBenchmark.class.getSimpleName())
@@ -78,7 +78,7 @@ public class JdkArrayBlockQueueBenchmark {
   public void throughputSimple() {
     try {
       queue.put("123");
-    } catch (InterruptedException e) {
+    } catch (InterruptedException ignored) {
       //
     }
     try {
@@ -86,7 +86,7 @@ public class JdkArrayBlockQueueBenchmark {
       if (kafkaInfoEvent != null) {
         //
       }
-    } catch (InterruptedException e) {
+    } catch (InterruptedException ignored) {
       //
     }
   }

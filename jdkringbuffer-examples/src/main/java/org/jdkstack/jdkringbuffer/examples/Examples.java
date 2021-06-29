@@ -25,7 +25,7 @@ public final class Examples {
    * @author admin
    * @param args args.
    */
-  public static void main(final String[] args) {
+  public static void main(final String... args) {
     final JdkRingBufferBlockingQueueV2<InfoEvent> queue = new JdkRingBufferBlockingQueueV2<>(1024);
     new Thread(
             () -> {
@@ -55,7 +55,7 @@ public final class Examples {
                   if (kafkaInfoEvent != null) {
                     cnt++;
                   }
-                } catch (InterruptedException e) {
+                } catch (InterruptedException ignored) {
                   //
                 }
               }

@@ -5,7 +5,6 @@ import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import com.lmax.disruptor.util.DaemonThreadFactory;
-import java.util.concurrent.TimeUnit;
 import org.jdkstack.jdkringbuffer.jmh.lmax.util.SimpleEventHandler;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Level;
@@ -30,8 +29,8 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
  * @author admin
  */
 @State(Scope.Benchmark)
-@Warmup(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
-@Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
+@Warmup(iterations = 5, time = 1)
+@Measurement(iterations = 5, time = 1)
 public class LmaxRingBufferBenchmark {
   private RingBuffer<String> ringBuffer;
   private Disruptor<String> disruptor;
@@ -71,7 +70,7 @@ public class LmaxRingBufferBenchmark {
    * @author admin
    * @param args args.
    */
-  public static void main(String[] args) {
+  public static void main(String... args) {
     Options opt =
         new OptionsBuilder()
             .include(LmaxRingBufferBenchmark.class.getSimpleName())

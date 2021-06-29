@@ -29,8 +29,8 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
  */
 @SuppressWarnings("java:S2142")
 @State(Scope.Benchmark)
-@Warmup(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
-@Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
+@Warmup(iterations = 5, time = 1)
+@Measurement(iterations = 5, time = 1)
 public class JdkRingBufferBenchmark {
   private final JdkRingBufferBlockingQueue<String> queue = new JdkRingBufferBlockingQueue<>();
   private final JdkRingBufferBlockingQueueV2<String> queue5 =
@@ -44,7 +44,7 @@ public class JdkRingBufferBenchmark {
    * @author admin
    * @param args args.
    */
-  public static void main(String[] args) {
+  public static void main(String... args) {
     Options opt =
         new OptionsBuilder()
             .include(JdkRingBufferBenchmark.class.getSimpleName())
@@ -82,7 +82,7 @@ public class JdkRingBufferBenchmark {
   public void throughputSimple() {
     try {
       queue.put("123");
-    } catch (InterruptedException e) {
+    } catch (InterruptedException ignored) {
       //
     }
     try {
@@ -90,7 +90,7 @@ public class JdkRingBufferBenchmark {
       if (kafkaInfoEvent != null) {
         //
       }
-    } catch (InterruptedException e) {
+    } catch (InterruptedException ignored) {
       //
     }
   }
@@ -108,7 +108,7 @@ public class JdkRingBufferBenchmark {
   public void throughputSimple5() {
     try {
       queue5.put("123");
-    } catch (InterruptedException e) {
+    } catch (InterruptedException ignored) {
       //
     }
     try {
@@ -116,7 +116,7 @@ public class JdkRingBufferBenchmark {
       if (kafkaInfoEvent != null) {
         //
       }
-    } catch (InterruptedException e) {
+    } catch (InterruptedException ignored) {
       //
     }
   }

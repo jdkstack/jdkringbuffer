@@ -29,8 +29,8 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
  * @author admin
  */
 @State(Scope.Benchmark)
-@Warmup(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
-@Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
+@Warmup(iterations = 5, time = 1)
+@Measurement(iterations = 5, time = 1)
 public class ConversantRingBufferBenchmark {
   private final DisruptorBlockingQueue<String> queue3 =
       new DisruptorBlockingQueue<>(1024, SpinPolicy.SPINNING);
@@ -45,7 +45,7 @@ public class ConversantRingBufferBenchmark {
    * @author admin
    * @param args args.
    */
-  public static void main(final String[] args) {
+  public static void main(final String... args) {
     Options opt =
         new OptionsBuilder()
             .include(ConversantRingBufferBenchmark.class.getSimpleName())
@@ -83,7 +83,7 @@ public class ConversantRingBufferBenchmark {
   public void throughputSimple6() {
     try {
       queue6.put("123");
-    } catch (InterruptedException e) {
+    } catch (InterruptedException ignored) {
       //
     }
     try {
@@ -91,7 +91,7 @@ public class ConversantRingBufferBenchmark {
       if (kafkaInfoEvent != null) {
         //
       }
-    } catch (InterruptedException e) {
+    } catch (InterruptedException ignored) {
       //
     }
   }
@@ -109,7 +109,7 @@ public class ConversantRingBufferBenchmark {
   public void throughputSimple3() {
     try {
       queue3.put("123");
-    } catch (InterruptedException e) {
+    } catch (InterruptedException ignored) {
       //
     }
     try {
@@ -117,7 +117,7 @@ public class ConversantRingBufferBenchmark {
       if (kafkaInfoEvent != null) {
         //
       }
-    } catch (InterruptedException e) {
+    } catch (InterruptedException ignored) {
       //
     }
   }

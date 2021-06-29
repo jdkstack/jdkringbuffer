@@ -14,7 +14,6 @@
 package org.jdkstack.jdkringbuffer.jmh.jctool;
 
 import java.util.Queue;
-import java.util.concurrent.TimeUnit;
 import org.openjdk.jmh.annotations.AuxCounters;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Group;
@@ -31,8 +30,8 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 @State(Scope.Benchmark)
-@Warmup(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
-@Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
+@Warmup(iterations = 5, time = 1)
+@Measurement(iterations = 5, time = 1)
 public class QueueThroughputBackoffNone {
   static final long DELAY_PRODUCER = Long.getLong("delay.p", 0L);
   static final long DELAY_CONSUMER = Long.getLong("delay.c", 0L);
@@ -97,7 +96,9 @@ public class QueueThroughputBackoffNone {
     }
   }
 
-  protected void backoff() {}
+  protected void backoff() {
+    //
+  }
 
   @Benchmark
   @Group("tpt")
@@ -116,7 +117,7 @@ public class QueueThroughputBackoffNone {
     }
   }
 
-  public static void main(String[] args) {
+  public static void main(String... args) {
     Options opt =
         new OptionsBuilder()
             .include(QueueThroughputBackoffNone.class.getSimpleName())

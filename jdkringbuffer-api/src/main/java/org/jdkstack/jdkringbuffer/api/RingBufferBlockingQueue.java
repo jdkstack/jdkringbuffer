@@ -8,6 +8,7 @@ package org.jdkstack.jdkringbuffer.api;
  * @author admin
  * @param <E> e.
  */
+@FunctionalInterface
 public interface RingBufferBlockingQueue<E> {
 
   /**
