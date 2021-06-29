@@ -2,6 +2,7 @@ package org.jdkstack.jdkringbuffer.jmh.array;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
+import org.jdkstack.jdkringbuffer.jmh.all.StudyJuliRuntimeException;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Level;
@@ -27,8 +28,8 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
  * @author admin
  */
 @State(Scope.Benchmark)
-@Warmup(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
-@Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
+@Warmup(iterations = 5, time = 1)
+@Measurement(iterations = 5, time = 1)
 public class JdkArrayBlockQueueBenchmark {
   private final ArrayBlockingQueue<String> queue = new ArrayBlockingQueue<>(1024);
 
@@ -40,7 +41,7 @@ public class JdkArrayBlockQueueBenchmark {
    * @author admin
    * @param args args.
    */
-  public static void main(String[] args) {
+  public static void main(String... args) {
     Options opt =
         new OptionsBuilder()
             .include(JdkArrayBlockQueueBenchmark.class.getSimpleName())
@@ -51,7 +52,7 @@ public class JdkArrayBlockQueueBenchmark {
       new Runner(opt).run();
     } catch (RunnerException e) {
       // Conversion into unchecked exception is also allowed.
-      throw new RuntimeException(e);
+      throw new StudyJuliRuntimeException(e);
     }
   }
 
@@ -78,16 +79,16 @@ public class JdkArrayBlockQueueBenchmark {
   public void throughputSimple() {
     try {
       queue.put("123");
-    } catch (InterruptedException e) {
-      //
+    } catch (InterruptedException ignored) {
+      Thread.currentThread().interrupt();
     }
     try {
       String kafkaInfoEvent = queue.take();
       if (kafkaInfoEvent != null) {
         //
       }
-    } catch (InterruptedException e) {
-      //
+    } catch (InterruptedException ignored) {
+      Thread.currentThread().interrupt();
     }
   }
 }

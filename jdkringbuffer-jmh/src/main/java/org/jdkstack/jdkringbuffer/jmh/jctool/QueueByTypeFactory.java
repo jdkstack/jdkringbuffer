@@ -15,9 +15,12 @@ import org.jctools.queues.SpscArrayQueue;
 import org.jctools.queues.SpscGrowableArrayQueue;
 import org.jctools.queues.SpscLinkedQueue;
 
-public class QueueByTypeFactory {
+@SuppressWarnings("all")
+public final class QueueByTypeFactory {
   public static final int QUEUE_CAPACITY = 1 << Integer.getInteger("pow2.capacity", 17);
   public static final int QUEUE_TYPE = Integer.getInteger("q.type", 0);
+
+  private QueueByTypeFactory() {}
 
   public static <T> Queue<T> createQueue() {
     final int queueCapacity = QUEUE_CAPACITY;
@@ -32,29 +35,29 @@ public class QueueByTypeFactory {
   public static <T> Queue<T> createQueue(int queueType, final int queueCapacity) {
     switch (queueType) {
       case -99:
-        return new ArrayDeque<T>(queueCapacity);
+        return new ArrayDeque<>(queueCapacity);
       case -3:
-        return new ArrayBlockingQueue<T>(queueCapacity);
+        return new ArrayBlockingQueue<>(queueCapacity);
       case -2:
-        return new LinkedTransferQueue<T>();
+        return new LinkedTransferQueue<>();
       case -1:
-        return new ConcurrentLinkedQueue<T>();
+        return new ConcurrentLinkedQueue<>();
       case 3:
-        return new SpscArrayQueue<T>(queueCapacity);
+        return new SpscArrayQueue<>(queueCapacity);
       case 31:
-        return new SpscLinkedQueue<T>();
+        return new SpscLinkedQueue<>();
       case 32:
-        return new SpscGrowableArrayQueue<T>(queueCapacity);
+        return new SpscGrowableArrayQueue<>(queueCapacity);
       case 5:
-        return new SpmcArrayQueue<T>(queueCapacity);
+        return new SpmcArrayQueue<>(queueCapacity);
       case 6:
-        return new MpscArrayQueue<T>(queueCapacity);
+        return new MpscArrayQueue<>(queueCapacity);
       case 61:
-        return new MpscCompoundQueue<T>(queueCapacity);
+        return new MpscCompoundQueue<>(queueCapacity);
       case 63:
-        return new MpscLinkedQueue<T>();
+        return new MpscLinkedQueue<>();
       case 7:
-        return new MpmcArrayQueue<T>(queueCapacity);
+        return new MpmcArrayQueue<>(queueCapacity);
       default:
     }
 
@@ -64,9 +67,9 @@ public class QueueByTypeFactory {
   @SuppressWarnings({"rawtypes", "unchecked"})
   public static <T> Queue<T> createQueue(String queueType, final int queueCapacity) {
     try {
-      int qType = Integer.valueOf(queueType);
+      int qType = Integer.parseInt(queueType);
       return createQueue(qType, queueCapacity);
-    } catch (NumberFormatException e) {
+    } catch (NumberFormatException ignored) {
     }
     Class qClass = queueClass(queueType);
     Constructor constructor;
@@ -102,42 +105,41 @@ public class QueueByTypeFactory {
     throw new IllegalArgumentException("Failed to construct queue:" + qClass.getName(), ex);
   }
 
-  @SuppressWarnings("rawtypes")
   private static Class queueClass(String queueType) {
     try {
       return Class.forName("org.jctools.queues." + queueType);
-    } catch (ClassNotFoundException e) {
+    } catch (ClassNotFoundException ignored) {
     }
     try {
       return Class.forName("org.jctools.queues.atomic." + queueType);
-    } catch (ClassNotFoundException e) {
+    } catch (ClassNotFoundException ignored) {
     }
     try {
       return Class.forName("java.util." + queueType);
-    } catch (ClassNotFoundException e) {
+    } catch (ClassNotFoundException ignored) {
     }
     try {
       return Class.forName("java.util.concurrent." + queueType);
-    } catch (ClassNotFoundException e) {
+    } catch (ClassNotFoundException ignored) {
     }
     try {
       return Class.forName(queueType);
-    } catch (ClassNotFoundException e) {
+    } catch (ClassNotFoundException ignored) {
     }
     throw new IllegalArgumentException("class not found:");
   }
 
   public static <T> Queue<T> buildQ(String qType, String qCapacity) {
     try {
-      int capacity = Integer.valueOf(qCapacity);
+      int capacity = Integer.parseInt(qCapacity);
       return createQueue(qType, capacity);
-    } catch (Exception e) {
+    } catch (Exception ignored) {
     }
 
     try {
       String[] args = qCapacity.split("\\.");
-      int chunk = Integer.valueOf(args[0]);
-      int capacity = Integer.valueOf(args[1]);
+      int chunk = Integer.parseInt(args[0]);
+      int capacity = Integer.parseInt(args[1]);
       return createQueue(qType, chunk, capacity);
     } catch (Exception e) {
       throw new IllegalArgumentException("Failed to parse qCapacity", e);

@@ -12,6 +12,7 @@ public class SimpleEventHandler implements EventHandler<String> {
 
   @Override
   public void onEvent(final String event, final long sequence, final boolean endOfBatch) {
-    // bh.consume(event);
+    //
+    bh.consume(event);
   }
 }

@@ -4,6 +4,7 @@ import com.conversantmedia.util.concurrent.DisruptorBlockingQueue;
 import com.conversantmedia.util.concurrent.MPMCBlockingQueue;
 import com.conversantmedia.util.concurrent.SpinPolicy;
 import java.util.concurrent.TimeUnit;
+import org.jdkstack.jdkringbuffer.jmh.all.StudyJuliRuntimeException;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Level;
@@ -29,8 +30,8 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
  * @author admin
  */
 @State(Scope.Benchmark)
-@Warmup(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
-@Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
+@Warmup(iterations = 5, time = 1)
+@Measurement(iterations = 5, time = 1)
 public class ConversantRingBufferBenchmark {
   private final DisruptorBlockingQueue<String> queue3 =
       new DisruptorBlockingQueue<>(1024, SpinPolicy.SPINNING);
@@ -45,7 +46,7 @@ public class ConversantRingBufferBenchmark {
    * @author admin
    * @param args args.
    */
-  public static void main(final String[] args) {
+  public static void main(final String... args) {
     Options opt =
         new OptionsBuilder()
             .include(ConversantRingBufferBenchmark.class.getSimpleName())
@@ -56,7 +57,7 @@ public class ConversantRingBufferBenchmark {
       new Runner(opt).run();
     } catch (RunnerException e) {
       // Conversion into unchecked exception is also allowed.
-      throw new RuntimeException(e);
+      throw new StudyJuliRuntimeException(e);
     }
   }
 
@@ -83,16 +84,16 @@ public class ConversantRingBufferBenchmark {
   public void throughputSimple6() {
     try {
       queue6.put("123");
-    } catch (InterruptedException e) {
-      //
+    } catch (InterruptedException ignored) {
+      Thread.currentThread().interrupt();
     }
     try {
       String kafkaInfoEvent = queue6.take();
       if (kafkaInfoEvent != null) {
         //
       }
-    } catch (InterruptedException e) {
-      //
+    } catch (InterruptedException ignored) {
+      Thread.currentThread().interrupt();
     }
   }
 
@@ -109,16 +110,16 @@ public class ConversantRingBufferBenchmark {
   public void throughputSimple3() {
     try {
       queue3.put("123");
-    } catch (InterruptedException e) {
-      //
+    } catch (InterruptedException ignored) {
+      Thread.currentThread().interrupt();
     }
     try {
       String kafkaInfoEvent = queue3.take();
       if (kafkaInfoEvent != null) {
         //
       }
-    } catch (InterruptedException e) {
-      //
+    } catch (InterruptedException ignored) {
+      Thread.currentThread().interrupt();
     }
   }
 }
