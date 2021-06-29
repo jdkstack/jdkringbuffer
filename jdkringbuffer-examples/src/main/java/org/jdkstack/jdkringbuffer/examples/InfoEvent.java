@@ -1,7 +1,5 @@
 package org.jdkstack.jdkringbuffer.examples;
 
-import java.io.Serializable;
-
 /**
  * .
  *
@@ -9,8 +7,7 @@ import java.io.Serializable;
  *
  * @author admin
  */
-public class InfoEvent implements Serializable {
-  private static final long serialVersionUID = 1L;
+public class InfoEvent {
   private long id;
   private String value;
 

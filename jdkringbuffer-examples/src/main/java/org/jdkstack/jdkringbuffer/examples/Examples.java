@@ -10,7 +10,7 @@ import org.jdkstack.jdkringbuffer.core.JdkRingBufferBlockingQueueV2;
  *
  * @author admin
  */
-@SuppressWarnings({"java:S106", "java:S2142", "java:S5612"})
+@SuppressWarnings("all")
 public final class Examples {
 
   private Examples() {
@@ -35,8 +35,8 @@ public final class Examples {
                 InfoEvent kafkaInfoEvent = new InfoEvent(pcnt, pcnt + "info");
                 try {
                   queue.put(kafkaInfoEvent);
-                } catch (InterruptedException e) {
-                  e.printStackTrace();
+                } catch (InterruptedException ignorede) {
+                  Thread.currentThread().interrupt();
                 }
                 pcnt++;
               }
@@ -57,6 +57,7 @@ public final class Examples {
                   }
                 } catch (InterruptedException ignored) {
                   //
+                  Thread.currentThread().interrupt();
                 }
               }
               long endTime = System.currentTimeMillis();

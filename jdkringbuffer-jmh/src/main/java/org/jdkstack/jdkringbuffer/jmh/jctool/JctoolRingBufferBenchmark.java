@@ -3,6 +3,7 @@ package org.jdkstack.jdkringbuffer.jmh.jctool;
 import java.util.concurrent.TimeUnit;
 import org.jctools.queues.MessagePassingQueue;
 import org.jctools.queues.MpmcArrayQueue;
+import org.jdkstack.jdkringbuffer.jmh.all.StudyJuliRuntimeException;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Level;
@@ -45,14 +46,14 @@ public class JctoolRingBufferBenchmark {
     Options opt =
         new OptionsBuilder()
             .include(JctoolRingBufferBenchmark.class.getSimpleName())
-            .threads(3)
+            .threads(1)
             .forks(1)
             .build();
     try {
       new Runner(opt).run();
     } catch (RunnerException e) {
       // Conversion into unchecked exception is also allowed.
-      throw new RuntimeException(e);
+      throw new StudyJuliRuntimeException(e);
     }
   }
 

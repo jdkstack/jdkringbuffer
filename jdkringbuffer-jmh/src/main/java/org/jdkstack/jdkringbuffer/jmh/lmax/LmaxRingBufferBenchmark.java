@@ -5,6 +5,7 @@ import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import com.lmax.disruptor.util.DaemonThreadFactory;
+import org.jdkstack.jdkringbuffer.jmh.all.StudyJuliRuntimeException;
 import org.jdkstack.jdkringbuffer.jmh.lmax.util.SimpleEventHandler;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Level;
@@ -28,13 +29,14 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
  *
  * @author admin
  */
+@SuppressWarnings("all")
 @State(Scope.Benchmark)
 @Warmup(iterations = 5, time = 1)
 @Measurement(iterations = 5, time = 1)
 public class LmaxRingBufferBenchmark {
+  private static final int BIG_BUFFER = 1 << 22;
   private RingBuffer<String> ringBuffer;
   private Disruptor<String> disruptor;
-  private static final int BIG_BUFFER = 1 << 22;
 
   @Setup
   public void setup(final Blackhole bh) {
@@ -55,7 +57,7 @@ public class LmaxRingBufferBenchmark {
   @Threads(4)
   public void producing() {
     long sequence = ringBuffer.next();
-    String simpleEvent = ringBuffer.get(sequence);
+    ringBuffer.get(sequence);
     ringBuffer.publish(sequence);
   }
 
@@ -81,7 +83,7 @@ public class LmaxRingBufferBenchmark {
       new Runner(opt).run();
     } catch (RunnerException e) {
       // Conversion into unchecked exception is also allowed.
-      throw new RuntimeException(e);
+      throw new StudyJuliRuntimeException(e);
     }
   }
 

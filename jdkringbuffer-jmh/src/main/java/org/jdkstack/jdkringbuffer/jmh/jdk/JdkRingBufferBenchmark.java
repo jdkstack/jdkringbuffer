@@ -3,6 +3,7 @@ package org.jdkstack.jdkringbuffer.jmh.jdk;
 import java.util.concurrent.TimeUnit;
 import org.jdkstack.jdkringbuffer.core.JdkRingBufferBlockingQueue;
 import org.jdkstack.jdkringbuffer.core.JdkRingBufferBlockingQueueV2;
+import org.jdkstack.jdkringbuffer.jmh.all.StudyJuliRuntimeException;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Level;
@@ -27,7 +28,6 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
  *
  * @author admin
  */
-@SuppressWarnings("java:S2142")
 @State(Scope.Benchmark)
 @Warmup(iterations = 5, time = 1)
 @Measurement(iterations = 5, time = 1)
@@ -48,14 +48,14 @@ public class JdkRingBufferBenchmark {
     Options opt =
         new OptionsBuilder()
             .include(JdkRingBufferBenchmark.class.getSimpleName())
-            .threads(10)
+            .threads(1)
             .forks(1)
             .build();
     try {
       new Runner(opt).run();
     } catch (RunnerException e) {
       // Conversion into unchecked exception is also allowed.
-      throw new RuntimeException(e);
+      throw new StudyJuliRuntimeException(e);
     }
   }
 
@@ -83,7 +83,7 @@ public class JdkRingBufferBenchmark {
     try {
       queue.put("123");
     } catch (InterruptedException ignored) {
-      //
+      Thread.currentThread().interrupt();
     }
     try {
       String kafkaInfoEvent = queue.take();
@@ -91,7 +91,7 @@ public class JdkRingBufferBenchmark {
         //
       }
     } catch (InterruptedException ignored) {
-      //
+      Thread.currentThread().interrupt();
     }
   }
 
@@ -109,7 +109,7 @@ public class JdkRingBufferBenchmark {
     try {
       queue5.put("123");
     } catch (InterruptedException ignored) {
-      //
+      Thread.currentThread().interrupt();
     }
     try {
       String kafkaInfoEvent = queue5.take();
@@ -117,7 +117,7 @@ public class JdkRingBufferBenchmark {
         //
       }
     } catch (InterruptedException ignored) {
-      //
+      Thread.currentThread().interrupt();
     }
   }
 }

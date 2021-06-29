@@ -15,12 +15,12 @@ import org.jctools.queues.SpscArrayQueue;
 import org.jctools.queues.SpscGrowableArrayQueue;
 import org.jctools.queues.SpscLinkedQueue;
 
+@SuppressWarnings("all")
 public final class QueueByTypeFactory {
   public static final int QUEUE_CAPACITY = 1 << Integer.getInteger("pow2.capacity", 17);
   public static final int QUEUE_TYPE = Integer.getInteger("q.type", 0);
 
-  private QueueByTypeFactory() {
-  }
+  private QueueByTypeFactory() {}
 
   public static <T> Queue<T> createQueue() {
     final int queueCapacity = QUEUE_CAPACITY;
@@ -105,7 +105,6 @@ public final class QueueByTypeFactory {
     throw new IllegalArgumentException("Failed to construct queue:" + qClass.getName(), ex);
   }
 
-  @SuppressWarnings("rawtypes")
   private static Class queueClass(String queueType) {
     try {
       return Class.forName("org.jctools.queues." + queueType);

@@ -31,7 +31,6 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
  *
  * @author admin
  */
-@SuppressWarnings("java:S2142")
 @State(Scope.Benchmark)
 @Warmup(iterations = 5, time = 1)
 @Measurement(iterations = 5, time = 1)
@@ -57,14 +56,14 @@ public class AllRingBufferBenchmark {
     Options opt =
         new OptionsBuilder()
             .include(AllRingBufferBenchmark.class.getSimpleName())
-            .threads(10)
+            .threads(1)
             .forks(1)
             .build();
     try {
       new Runner(opt).run();
     } catch (RunnerException e) {
       // Conversion into unchecked exception is also allowed.
-      throw new RuntimeException(e);
+      throw new StudyJuliRuntimeException(e);
     }
   }
 
@@ -92,7 +91,7 @@ public class AllRingBufferBenchmark {
     try {
       queue.put("123");
     } catch (InterruptedException ignored) {
-      //
+      Thread.currentThread().interrupt();
     }
     try {
       String kafkaInfoEvent = queue.take();
@@ -100,7 +99,7 @@ public class AllRingBufferBenchmark {
         //
       }
     } catch (InterruptedException ignored) {
-      //
+      Thread.currentThread().interrupt();
     }
   }
 
@@ -118,7 +117,7 @@ public class AllRingBufferBenchmark {
     try {
       queue2.put("123");
     } catch (InterruptedException ignored) {
-      //
+      Thread.currentThread().interrupt();
     }
     try {
       String kafkaInfoEvent = queue2.take();
@@ -126,7 +125,7 @@ public class AllRingBufferBenchmark {
         //
       }
     } catch (InterruptedException ignored) {
-      //
+      Thread.currentThread().interrupt();
     }
   }
 
@@ -144,7 +143,7 @@ public class AllRingBufferBenchmark {
     try {
       queue3.put("123");
     } catch (InterruptedException ignored) {
-      //
+      Thread.currentThread().interrupt();
     }
     try {
       String kafkaInfoEvent = queue3.take();
@@ -152,7 +151,7 @@ public class AllRingBufferBenchmark {
         //
       }
     } catch (InterruptedException ignored) {
-      //
+      Thread.currentThread().interrupt();
     }
   }
 
@@ -170,7 +169,7 @@ public class AllRingBufferBenchmark {
     try {
       queue5.put("123");
     } catch (InterruptedException ignored) {
-      //
+      Thread.currentThread().interrupt();
     }
     try {
       String kafkaInfoEvent = queue5.take();
@@ -178,7 +177,7 @@ public class AllRingBufferBenchmark {
         //
       }
     } catch (InterruptedException ignored) {
-      //
+      Thread.currentThread().interrupt();
     }
   }
 
@@ -196,7 +195,7 @@ public class AllRingBufferBenchmark {
     try {
       queue6.put("123");
     } catch (InterruptedException ignored) {
-      //
+      Thread.currentThread().interrupt();
     }
     try {
       String kafkaInfoEvent = queue6.take();
@@ -204,7 +203,7 @@ public class AllRingBufferBenchmark {
         //
       }
     } catch (InterruptedException ignored) {
-      //
+      Thread.currentThread().interrupt();
     }
   }
 }

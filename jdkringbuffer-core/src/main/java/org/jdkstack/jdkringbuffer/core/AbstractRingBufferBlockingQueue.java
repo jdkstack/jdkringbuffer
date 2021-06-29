@@ -17,9 +17,8 @@ import org.jdkstack.jdkringbuffer.api.RingBufferBlockingQueue;
  * @author admin
  * @param <E> e .
  */
-@SuppressWarnings("java:S134")
 public abstract class AbstractRingBufferBlockingQueue<E> extends AbstractQueue<E>
-    implements BlockingQueue<E>, RingBufferBlockingQueue<E> {
+    implements BlockingQueue<E>, RingBufferBlockingQueue {
   /** 环形数组的容量. */
   private final int capacity;
   /** 环形数组. */
@@ -43,6 +42,7 @@ public abstract class AbstractRingBufferBlockingQueue<E> extends AbstractQueue<E
   protected AbstractRingBufferBlockingQueue(final int capacity) {
     this.capacity = capacity;
     this.index = capacity - 1;
+    // jdk 泛型数组,会有检查异常,但不影响什么,用unchecked关闭检查.
     this.ringBuffer = (E[]) new Object[capacity];
   }
 
@@ -85,8 +85,7 @@ public abstract class AbstractRingBufferBlockingQueue<E> extends AbstractQueue<E
    * @return boolean E e.
    */
   @Override
-  public boolean offer(final E e, final long timeout, final TimeUnit unit)
-      throws InterruptedException {
+  public boolean offer(final E e, final long timeout, final TimeUnit unit) {
     throw new UnsupportedOperationException("未实现.");
   }
 
@@ -129,7 +128,7 @@ public abstract class AbstractRingBufferBlockingQueue<E> extends AbstractQueue<E
    * @return E e.
    */
   @Override
-  public E poll(final long timeout, final TimeUnit unit) throws InterruptedException {
+  public E poll(final long timeout, final TimeUnit unit) {
     throw new UnsupportedOperationException("未实现.");
   }
 

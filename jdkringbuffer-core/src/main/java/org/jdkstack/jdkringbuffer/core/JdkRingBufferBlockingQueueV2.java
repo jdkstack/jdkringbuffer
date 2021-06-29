@@ -33,7 +33,6 @@ public class JdkRingBufferBlockingQueueV2<E> extends AbstractRingBufferBlockingQ
     super(capacity);
   }
 
-
   /**
    * This is a method description.
    *
@@ -46,9 +45,12 @@ public class JdkRingBufferBlockingQueueV2<E> extends AbstractRingBufferBlockingQ
   public void put(final E e) throws InterruptedException {
     while (!offer(e)) {
       fullAwait();
+      final Thread t = Thread.currentThread();
+      if (t.isInterrupted()) {
+        throw new InterruptedException("线程中断.");
+      }
     }
   }
-
 
   /**
    * This is a method description.
@@ -66,29 +68,25 @@ public class JdkRingBufferBlockingQueueV2<E> extends AbstractRingBufferBlockingQ
         return e;
       } else {
         emptyAwait();
+        final Thread t = Thread.currentThread();
+        if (t.isInterrupted()) {
+          throw new InterruptedException("线程中断.");
+        }
       }
     }
   }
 
-  @SuppressWarnings("java:S1162")
-  private void fullAwait() throws InterruptedException {
+  private void fullAwait() {
     final Thread t = Thread.currentThread();
     while (isFull() && !t.isInterrupted()) {
       Thread.onSpinWait();
     }
-    if (t.isInterrupted()) {
-      throw new InterruptedException("线程中断.");
-    }
   }
 
-  @SuppressWarnings("java:S1162")
-  private void emptyAwait() throws InterruptedException {
+  private void emptyAwait() {
     final Thread t = Thread.currentThread();
     while (isEmpty() && !t.isInterrupted()) {
       Thread.onSpinWait();
-    }
-    if (t.isInterrupted()) {
-      throw new InterruptedException("线程中断.");
     }
   }
 }

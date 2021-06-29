@@ -4,6 +4,7 @@ import com.conversantmedia.util.concurrent.DisruptorBlockingQueue;
 import com.conversantmedia.util.concurrent.MPMCBlockingQueue;
 import com.conversantmedia.util.concurrent.SpinPolicy;
 import java.util.concurrent.TimeUnit;
+import org.jdkstack.jdkringbuffer.jmh.all.StudyJuliRuntimeException;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Level;
@@ -56,7 +57,7 @@ public class ConversantRingBufferBenchmark {
       new Runner(opt).run();
     } catch (RunnerException e) {
       // Conversion into unchecked exception is also allowed.
-      throw new RuntimeException(e);
+      throw new StudyJuliRuntimeException(e);
     }
   }
 
@@ -84,7 +85,7 @@ public class ConversantRingBufferBenchmark {
     try {
       queue6.put("123");
     } catch (InterruptedException ignored) {
-      //
+      Thread.currentThread().interrupt();
     }
     try {
       String kafkaInfoEvent = queue6.take();
@@ -92,7 +93,7 @@ public class ConversantRingBufferBenchmark {
         //
       }
     } catch (InterruptedException ignored) {
-      //
+      Thread.currentThread().interrupt();
     }
   }
 
@@ -110,7 +111,7 @@ public class ConversantRingBufferBenchmark {
     try {
       queue3.put("123");
     } catch (InterruptedException ignored) {
-      //
+      Thread.currentThread().interrupt();
     }
     try {
       String kafkaInfoEvent = queue3.take();
@@ -118,7 +119,7 @@ public class ConversantRingBufferBenchmark {
         //
       }
     } catch (InterruptedException ignored) {
-      //
+      Thread.currentThread().interrupt();
     }
   }
 }
