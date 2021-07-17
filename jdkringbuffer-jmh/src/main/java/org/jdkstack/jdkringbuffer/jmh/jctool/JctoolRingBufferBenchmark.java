@@ -46,7 +46,7 @@ public class JctoolRingBufferBenchmark {
     Options opt =
         new OptionsBuilder()
             .include(JctoolRingBufferBenchmark.class.getSimpleName())
-            .threads(1)
+            .threads(10)
             .forks(1)
             .build();
     try {
@@ -70,10 +70,10 @@ public class JctoolRingBufferBenchmark {
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
-  public void throughputSimple6() {
+  public void throughputSimple() {
     queue.offer("123");
-    String kafkaInfoEvent = queue.poll();
-    if (kafkaInfoEvent != null) {
+    String info = queue.poll();
+    if (info != null) {
       //
     }
   }

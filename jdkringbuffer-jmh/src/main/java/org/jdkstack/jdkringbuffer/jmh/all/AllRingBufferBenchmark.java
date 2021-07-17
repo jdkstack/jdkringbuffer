@@ -4,6 +4,7 @@ import com.conversantmedia.util.concurrent.DisruptorBlockingQueue;
 import com.conversantmedia.util.concurrent.MPMCBlockingQueue;
 import com.conversantmedia.util.concurrent.SpinPolicy;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import org.jdkstack.jdkringbuffer.core.JdkRingBufferBlockingQueue;
 import org.jdkstack.jdkringbuffer.core.JdkRingBufferBlockingQueueV2;
@@ -35,14 +36,11 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 @Warmup(iterations = 5, time = 1)
 @Measurement(iterations = 5, time = 1)
 public class AllRingBufferBenchmark {
-  private final JdkRingBufferBlockingQueue<String> queue = new JdkRingBufferBlockingQueue<>();
-  private final ArrayBlockingQueue<String> queue2 = new ArrayBlockingQueue<>(1024);
-  private final DisruptorBlockingQueue<String> queue3 =
-      new DisruptorBlockingQueue<>(1024, SpinPolicy.SPINNING);
-  private final JdkRingBufferBlockingQueueV2<String> queue5 =
-      new JdkRingBufferBlockingQueueV2<>(1024);
-  private final MPMCBlockingQueue<String> queue6 =
-      new MPMCBlockingQueue<>(1024, SpinPolicy.SPINNING);
+  private final BlockingQueue<String> queue1 = new JdkRingBufferBlockingQueue<>();
+  private final BlockingQueue<String> queue2 = new ArrayBlockingQueue<>(1024);
+  private final BlockingQueue<String> queue3 = new DisruptorBlockingQueue<>(1024, SpinPolicy.SPINNING);
+  private final BlockingQueue<String> queue4 = new JdkRingBufferBlockingQueueV2<>(1024);
+  private final BlockingQueue<String> queue5 = new MPMCBlockingQueue<>(1024, SpinPolicy.SPINNING);
 
   /**
    * This is a method description.
@@ -56,7 +54,7 @@ public class AllRingBufferBenchmark {
     Options opt =
         new OptionsBuilder()
             .include(AllRingBufferBenchmark.class.getSimpleName())
-            .threads(1)
+            .threads(10)
             .forks(1)
             .build();
     try {
@@ -68,7 +66,7 @@ public class AllRingBufferBenchmark {
   }
 
   @Setup(Level.Trial)
-  public void up() {
+  public void setup() {
     //
   }
 
@@ -87,15 +85,15 @@ public class AllRingBufferBenchmark {
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
-  public void throughputSimple() {
+  public void throughputSimple1() {
     try {
-      queue.put("123");
+      queue1.put("123");
     } catch (InterruptedException ignored) {
       Thread.currentThread().interrupt();
     }
     try {
-      String kafkaInfoEvent = queue.take();
-      if (kafkaInfoEvent != null) {
+      String info = queue1.take();
+      if (info != null) {
         //
       }
     } catch (InterruptedException ignored) {
@@ -120,8 +118,8 @@ public class AllRingBufferBenchmark {
       Thread.currentThread().interrupt();
     }
     try {
-      String kafkaInfoEvent = queue2.take();
-      if (kafkaInfoEvent != null) {
+      String info = queue2.take();
+      if (info != null) {
         //
       }
     } catch (InterruptedException ignored) {
@@ -146,8 +144,34 @@ public class AllRingBufferBenchmark {
       Thread.currentThread().interrupt();
     }
     try {
-      String kafkaInfoEvent = queue3.take();
-      if (kafkaInfoEvent != null) {
+      String info = queue3.take();
+      if (info != null) {
+        //
+      }
+    } catch (InterruptedException ignored) {
+      Thread.currentThread().interrupt();
+    }
+  }
+
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
+  @Benchmark
+  @BenchmarkMode(Mode.Throughput)
+  @OutputTimeUnit(TimeUnit.SECONDS)
+  public void throughputSimple4() {
+    try {
+      queue4.put("123");
+    } catch (InterruptedException ignored) {
+      Thread.currentThread().interrupt();
+    }
+    try {
+      String info = queue4.take();
+      if (info != null) {
         //
       }
     } catch (InterruptedException ignored) {
@@ -172,34 +196,8 @@ public class AllRingBufferBenchmark {
       Thread.currentThread().interrupt();
     }
     try {
-      String kafkaInfoEvent = queue5.take();
-      if (kafkaInfoEvent != null) {
-        //
-      }
-    } catch (InterruptedException ignored) {
-      Thread.currentThread().interrupt();
-    }
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @author admin
-   */
-  @Benchmark
-  @BenchmarkMode(Mode.Throughput)
-  @OutputTimeUnit(TimeUnit.SECONDS)
-  public void throughputSimple6() {
-    try {
-      queue6.put("123");
-    } catch (InterruptedException ignored) {
-      Thread.currentThread().interrupt();
-    }
-    try {
-      String kafkaInfoEvent = queue6.take();
-      if (kafkaInfoEvent != null) {
+      String info = queue5.take();
+      if (info != null) {
         //
       }
     } catch (InterruptedException ignored) {

@@ -1,5 +1,6 @@
 package org.jdkstack.jdkringbuffer.jmh.jdk;
 
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import org.jdkstack.jdkringbuffer.core.JdkRingBufferBlockingQueue;
 import org.jdkstack.jdkringbuffer.core.JdkRingBufferBlockingQueueV2;
@@ -32,9 +33,8 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 @Warmup(iterations = 5, time = 1)
 @Measurement(iterations = 5, time = 1)
 public class JdkRingBufferBenchmark {
-  private final JdkRingBufferBlockingQueue<String> queue = new JdkRingBufferBlockingQueue<>();
-  private final JdkRingBufferBlockingQueueV2<String> queue5 =
-      new JdkRingBufferBlockingQueueV2<>(1024);
+  private final BlockingQueue<String> queue = new JdkRingBufferBlockingQueue<>();
+  private final BlockingQueue<String> queue1 = new JdkRingBufferBlockingQueueV2<>(1024);
 
   /**
    * This is a method description.
@@ -48,7 +48,7 @@ public class JdkRingBufferBenchmark {
     Options opt =
         new OptionsBuilder()
             .include(JdkRingBufferBenchmark.class.getSimpleName())
-            .threads(1)
+            .threads(10)
             .forks(1)
             .build();
     try {
@@ -60,7 +60,7 @@ public class JdkRingBufferBenchmark {
   }
 
   @Setup(Level.Trial)
-  public void up() {
+  public void setup() {
     //
   }
 
@@ -86,8 +86,8 @@ public class JdkRingBufferBenchmark {
       Thread.currentThread().interrupt();
     }
     try {
-      String kafkaInfoEvent = queue.take();
-      if (kafkaInfoEvent != null) {
+      String info = queue.take();
+      if (info != null) {
         //
       }
     } catch (InterruptedException ignored) {
@@ -105,15 +105,15 @@ public class JdkRingBufferBenchmark {
   @Benchmark
   @BenchmarkMode(Mode.Throughput)
   @OutputTimeUnit(TimeUnit.SECONDS)
-  public void throughputSimple5() {
+  public void throughputSimple1() {
     try {
-      queue5.put("123");
+      queue1.put("123");
     } catch (InterruptedException ignored) {
       Thread.currentThread().interrupt();
     }
     try {
-      String kafkaInfoEvent = queue5.take();
-      if (kafkaInfoEvent != null) {
+      String info = queue1.take();
+      if (info != null) {
         //
       }
     } catch (InterruptedException ignored) {
