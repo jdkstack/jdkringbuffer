@@ -18,7 +18,7 @@ public class JdkRingBufferBlockingQueue<E> extends AbstractRingBufferBlockingQue
    * @author admin
    */
   public JdkRingBufferBlockingQueue() {
-    //
+    super(Constants.CAPACITY);
   }
 
   /**
