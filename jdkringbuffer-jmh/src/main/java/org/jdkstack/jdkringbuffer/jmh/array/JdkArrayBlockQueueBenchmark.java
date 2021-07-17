@@ -1,6 +1,7 @@
 package org.jdkstack.jdkringbuffer.jmh.array;
 
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import org.jdkstack.jdkringbuffer.jmh.all.StudyJuliRuntimeException;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -31,7 +32,7 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 @Warmup(iterations = 5, time = 1)
 @Measurement(iterations = 5, time = 1)
 public class JdkArrayBlockQueueBenchmark {
-  private final ArrayBlockingQueue<String> queue = new ArrayBlockingQueue<>(1024);
+  private final BlockingQueue<String> queue = new ArrayBlockingQueue<>(1024);
 
   /**
    * This is a method description.
@@ -45,7 +46,7 @@ public class JdkArrayBlockQueueBenchmark {
     Options opt =
         new OptionsBuilder()
             .include(JdkArrayBlockQueueBenchmark.class.getSimpleName())
-            .threads(1)
+            .threads(10)
             .forks(1)
             .build();
     try {
@@ -57,7 +58,7 @@ public class JdkArrayBlockQueueBenchmark {
   }
 
   @Setup(Level.Trial)
-  public void up() {
+  public void setup() {
     //
   }
 

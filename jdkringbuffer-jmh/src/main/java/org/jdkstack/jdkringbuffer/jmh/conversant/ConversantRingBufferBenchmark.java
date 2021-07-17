@@ -50,7 +50,7 @@ public class ConversantRingBufferBenchmark {
     Options opt =
         new OptionsBuilder()
             .include(ConversantRingBufferBenchmark.class.getSimpleName())
-            .threads(1)
+            .threads(10)
             .forks(1)
             .build();
     try {
@@ -62,7 +62,7 @@ public class ConversantRingBufferBenchmark {
   }
 
   @Setup(Level.Trial)
-  public void up() {
+  public void setup() {
     //
   }
 

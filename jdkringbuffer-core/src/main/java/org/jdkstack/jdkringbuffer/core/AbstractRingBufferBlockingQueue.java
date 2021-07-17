@@ -64,12 +64,13 @@ public abstract class AbstractRingBufferBlockingQueue<E> extends AbstractQueue<E
     // 检查环形数组是否满了. 检查是否被其他线程修改.
     if (0 > queueStart || this.head.get() > queueStart) {
       if (this.tailLock.compareAndSet(tailSeq, tailSeq + 1)) {
-        // 向环形数组设置元素,取模后向对应的下表设置元素.
+        // 向环形数组设置元素,取模后向对应的下标设置元素.
         final int tailSlot = tailSeq & index;
         this.ringBuffer[tailSlot] = e;
         this.tail.getAndIncrement();
         flag = true;
       } else {
+        // 如果被占用,暂停1nanos.
         LockSupport.parkNanos(1L);
       }
     }
