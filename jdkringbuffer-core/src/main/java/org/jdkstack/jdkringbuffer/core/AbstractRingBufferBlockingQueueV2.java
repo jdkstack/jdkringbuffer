@@ -1,7 +1,5 @@
 package org.jdkstack.jdkringbuffer.core;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.LockSupport;

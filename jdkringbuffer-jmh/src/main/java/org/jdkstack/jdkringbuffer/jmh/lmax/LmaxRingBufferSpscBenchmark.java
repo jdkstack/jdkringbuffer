@@ -1,5 +1,7 @@
-package com.lmax.disruptor;
+package org.jdkstack.jdkringbuffer.jmh.lmax;
 
+import com.lmax.disruptor.BusySpinWaitStrategy;
+import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import com.lmax.disruptor.util.DaemonThreadFactory;
@@ -54,7 +56,7 @@ public class LmaxRingBufferSpscBenchmark {
     disruptor.shutdown();
   }
 
-  public static void main(final String[] args) throws RunnerException {
+  public static void main(final String... args) throws RunnerException {
     Options opt =
         new OptionsBuilder()
             .include(LmaxRingBufferSpscBenchmark.class.getSimpleName())

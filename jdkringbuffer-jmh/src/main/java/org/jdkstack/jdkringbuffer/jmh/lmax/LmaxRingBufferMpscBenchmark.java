@@ -59,7 +59,7 @@ public class LmaxRingBufferMpscBenchmark {
     disruptor.shutdown();
   }
 
-  public static void main(final String[] args) throws RunnerException {
+  public static void main(final String... args) throws RunnerException {
     Options opt =
         new OptionsBuilder()
             .include(LmaxRingBufferMpscBenchmark.class.getSimpleName())
