@@ -3,6 +3,14 @@ package org.jdkstack.jdkringbuffer.core;
 import java.util.AbstractQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * This is a class description.
+ *
+ * <p>Another description after blank line.
+ *
+ * @author admin
+ * @param <E> e.
+ */
 public abstract class AbstractBlockingQueue<E> extends AbstractQueue<E> {
   /** 环形数组的容量. */
   protected final int capacity;
@@ -38,11 +46,16 @@ public abstract class AbstractBlockingQueue<E> extends AbstractQueue<E> {
         // 如果不能获取,则等待.
         emptyAwait();
         // 检查线程是否抛出线程中断.
-        final Thread t = Thread.currentThread();
-        if (t.isInterrupted()) {
-          throw new InterruptedException("线程中断.");
-        }
+        interruptedException();
       }
+    }
+  }
+
+  private void interruptedException() throws InterruptedException {
+    // 检查线程是否抛出线程中断.
+    final Thread t = Thread.currentThread();
+    if (t.isInterrupted()) {
+      throw new InterruptedException("线程中断.");
     }
   }
 
@@ -52,4 +65,39 @@ public abstract class AbstractBlockingQueue<E> extends AbstractQueue<E> {
       Thread.onSpinWait();
     }
   }
+
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   * @param e e.
+   */
+  public void put(final E e) throws InterruptedException {
+    // 循环向环形数组插入数据,直到能插入为止.
+    while (!offer(e)) {
+      // 如果不能插入,则等待.
+      fullAwait();
+      // 检查线程是否抛出线程中断.
+      interruptedException();
+    }
+  }
+
+  private void fullAwait() {
+    final Thread t = Thread.currentThread();
+    while (isFull() && !t.isInterrupted()) {
+      Thread.onSpinWait();
+    }
+  }
+
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   * @return boolean e.
+   */
+  public abstract boolean isFull();
 }
