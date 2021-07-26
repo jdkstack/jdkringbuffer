@@ -52,40 +52,10 @@ public class JdkRingBufferBlockingQueueV2<E> extends AbstractRingBufferBlockingQ
     }
   }
 
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @author admin
-   * @return boolean e.
-   */
-  @Override
-  public E take() throws InterruptedException {
-    while (true) {
-      E e = poll();
-      if (e != null) {
-        return e;
-      } else {
-        emptyAwait();
-        final Thread t = Thread.currentThread();
-        if (t.isInterrupted()) {
-          throw new InterruptedException("线程中断.");
-        }
-      }
-    }
-  }
 
   private void fullAwait() {
     final Thread t = Thread.currentThread();
     while (isFull() && !t.isInterrupted()) {
-      Thread.onSpinWait();
-    }
-  }
-
-  private void emptyAwait() {
-    final Thread t = Thread.currentThread();
-    while (isEmpty() && !t.isInterrupted()) {
       Thread.onSpinWait();
     }
   }

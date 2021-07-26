@@ -1,6 +1,5 @@
 package org.jdkstack.jdkringbuffer.core;
 
-import java.util.AbstractQueue;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.concurrent.BlockingQueue;
@@ -17,20 +16,12 @@ import org.jdkstack.jdkringbuffer.api.RingBufferBlockingQueue;
  * @author admin
  * @param <E> e .
  */
-public abstract class AbstractRingBufferBlockingQueue<E> extends AbstractQueue<E>
+public abstract class AbstractRingBufferBlockingQueue<E> extends AbstractBlockingQueue<E>
     implements BlockingQueue<E>, RingBufferBlockingQueue {
-  /** 环形数组的容量. */
-  private final int capacity;
   /** 环形数组. */
   private final E[] ringBuffer;
-  /** 环形数组入队时,当前元素的坐标. */
-  private final int index;
-  /** 环形数组入队时,总共入队了多少个元素. */
-  private final AtomicInteger tail = new AtomicInteger();
   /** 环形数组入队时,是否被其他线程抢先放入了值. */
   private final AtomicInteger tailLock = new AtomicInteger(0);
-  /** 环形数组出队时,总共出队了多少个元素. */
-  private final AtomicInteger head = new AtomicInteger();
   /** 环形数组出队时,是否被其他线程抢先获取了值. */
   private final AtomicInteger headLock = new AtomicInteger(0);
 
@@ -40,8 +31,7 @@ public abstract class AbstractRingBufferBlockingQueue<E> extends AbstractQueue<E
 
   @SuppressWarnings("unchecked")
   protected AbstractRingBufferBlockingQueue(final int capacity) {
-    this.capacity = capacity;
-    this.index = capacity - 1;
+    super(capacity, capacity - 1);
     // jdk 泛型数组,会有检查异常,但不影响什么,用unchecked关闭检查.
     this.ringBuffer = (E[]) new Object[capacity];
   }
