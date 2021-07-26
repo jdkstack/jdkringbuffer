@@ -1,7 +1,5 @@
 package org.jdkstack.jdkringbuffer.core;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -147,71 +145,5 @@ public abstract class AbstractRingBufferBlockingQueue<E> extends AbstractBlockin
   @Override
   public final boolean isEmpty() {
     return tail.get() == head.get();
-  }
-
-  /**
-   * This is a class description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @author admin
-   * @return boolean e.
-   */
-  @Override
-  public boolean isFull() {
-    final int queueStart = tail.get() - capacity;
-    return head.get() == queueStart;
-  }
-
-  /**
-   * This is a class description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @author admin
-   * @return Iterator E e.
-   */
-  @Override
-  public Iterator<E> iterator() {
-    throw new UnsupportedOperationException("未实现.");
-  }
-
-  /**
-   * This is a class description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @author admin
-   * @return int e.
-   */
-  @Override
-  public int remainingCapacity() {
-    throw new UnsupportedOperationException("未实现.");
-  }
-
-  /**
-   * This is a class description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @author admin
-   * @return int e.
-   */
-  @Override
-  public int drainTo(final Collection<? super E> c) {
-    throw new UnsupportedOperationException("未实现.");
-  }
-
-  /**
-   * This is a class description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @author admin
-   * @return int e.
-   */
-  @Override
-  public int drainTo(final Collection<? super E> c, final int maxElements) {
-    throw new UnsupportedOperationException("未实现.");
   }
 }

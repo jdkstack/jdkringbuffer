@@ -1,6 +1,8 @@
 package org.jdkstack.jdkringbuffer.core;
 
 import java.util.AbstractQueue;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -98,9 +100,19 @@ public abstract class AbstractBlockingQueue<E> extends AbstractQueue<E> {
    * <p>Another description after blank line.
    *
    * @author admin
+   * @param e e.
+   * @param timeout t.
+   * @param unit u.
    * @return boolean e.
    */
-  public abstract boolean isFull();
+  public boolean offer(final E e, final long timeout, final TimeUnit unit) {
+    throw new UnsupportedOperationException("未实现.");
+  }
+
+  public final boolean isFull() {
+    final int queueStart = tail.get() - capacity;
+    return head.get() == queueStart;
+  }
 
   /**
    * This is a method description.
@@ -108,12 +120,45 @@ public abstract class AbstractBlockingQueue<E> extends AbstractQueue<E> {
    * <p>Another description after blank line.
    *
    * @author admin
-   * @param e e.
-   * @param timeout t.
-   * @param unit u.
-   * @return boolean e.
+   * @return Iterator E e.
    */
-  public boolean offer(final E e, final long timeout, final TimeUnit unit) {
+  public Iterator<E> iterator() {
+    throw new UnsupportedOperationException("未实现.");
+  }
+
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   * @return int e.
+   */
+  public int remainingCapacity() {
+    throw new UnsupportedOperationException("未实现.");
+  }
+
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   * @return int e.
+   */
+  public int drainTo(final Collection<? super E> c) {
+    throw new UnsupportedOperationException("未实现.");
+  }
+
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   * @return int e.
+   */
+  public int drainTo(final Collection<? super E> c, final int maxElements) {
     throw new UnsupportedOperationException("未实现.");
   }
 }
