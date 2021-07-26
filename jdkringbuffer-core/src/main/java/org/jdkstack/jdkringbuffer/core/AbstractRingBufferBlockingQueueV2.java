@@ -1,11 +1,7 @@
 package org.jdkstack.jdkringbuffer.core;
 
-import java.util.AbstractQueue;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.LockSupport;
 import org.jdkstack.jdkringbuffer.api.RingBufferBlockingQueue;
 
@@ -17,18 +13,10 @@ import org.jdkstack.jdkringbuffer.api.RingBufferBlockingQueue;
  * @author admin
  * @param <E> e .
  */
-public abstract class AbstractRingBufferBlockingQueueV2<E> extends AbstractQueue<E>
+public abstract class AbstractRingBufferBlockingQueueV2<E> extends AbstractBlockingQueue<E>
     implements BlockingQueue<E>, RingBufferBlockingQueue {
-  /** 环形数组的容量. */
-  private final int capacity;
-  /** 环形数组的下标. */
-  private final int index;
   /** 环形数组. */
   private final Entry<E>[] buffer;
-  /** 环形数组消费总元素数量. */
-  private final AtomicInteger head = new AtomicInteger(0);
-  /** 环形数组生产总元素数量. */
-  private final AtomicInteger tail = new AtomicInteger(0);
 
   /**
    * This is a method description.
@@ -51,8 +39,7 @@ public abstract class AbstractRingBufferBlockingQueueV2<E> extends AbstractQueue
    */
   @SuppressWarnings("unchecked")
   protected AbstractRingBufferBlockingQueueV2(final int capacity) {
-    this.capacity = capacity;
-    index = capacity - 1;
+    super(capacity, capacity - 1);
     buffer = new Entry[capacity];
     for (int i = 0; i < capacity; i++) {
       buffer[i] = new Entry<>(i);
@@ -85,22 +72,6 @@ public abstract class AbstractRingBufferBlockingQueueV2<E> extends AbstractQueue
       }
     }
     return flag;
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @author admin
-   * @param e e.
-   * @param timeout t.
-   * @param unit u.
-   * @return boolean e.
-   */
-  @Override
-  public boolean offer(final E e, final long timeout, final TimeUnit unit) {
-    throw new UnsupportedOperationException("未实现.");
   }
 
   /**
@@ -156,63 +127,5 @@ public abstract class AbstractRingBufferBlockingQueueV2<E> extends AbstractQueue
   @Override
   public final boolean isEmpty() {
     return head.get() == tail.get();
-  }
-
-  @Override
-  public final boolean isFull() {
-    final int queueStart = tail.get() - capacity;
-    return head.get() == queueStart;
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @author admin
-   * @return Iterator E e.
-   */
-  @Override
-  public Iterator<E> iterator() {
-    throw new UnsupportedOperationException("未实现.");
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @author admin
-   * @return int e.
-   */
-  @Override
-  public int remainingCapacity() {
-    throw new UnsupportedOperationException("未实现.");
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @author admin
-   * @return int e.
-   */
-  @Override
-  public int drainTo(final Collection<? super E> c) {
-    throw new UnsupportedOperationException("未实现.");
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @author admin
-   * @return int e.
-   */
-  @Override
-  public int drainTo(final Collection<? super E> c, final int maxElements) {
-    throw new UnsupportedOperationException("未实现.");
   }
 }

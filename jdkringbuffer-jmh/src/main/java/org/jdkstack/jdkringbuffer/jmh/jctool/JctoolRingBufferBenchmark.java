@@ -58,7 +58,7 @@ public class JctoolRingBufferBenchmark {
   }
 
   @Setup(Level.Trial)
-  public void up() {
+  public void setUp() {
     //
   }
 

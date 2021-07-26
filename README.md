@@ -14,6 +14,8 @@
 ![annotation-rate](https://img.shields.io/badge/annotation-rate-red.svg)
 ![(api/core)-lib](https://img.shields.io/badge/(api/core)-lib-red.svg)
 
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-black.svg)](https://sonarcloud.io/dashboard?id=org.jdkstack%3Ajdkringbuffer)
+
 Benchmark:
 
 One thread-->
