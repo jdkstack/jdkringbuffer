@@ -82,22 +82,6 @@ public abstract class AbstractRingBufferBlockingQueueV2<E> extends AbstractBlock
    * <p>Another description after blank line.
    *
    * @author admin
-   * @param e e.
-   * @param timeout t.
-   * @param unit u.
-   * @return boolean e.
-   */
-  @Override
-  public boolean offer(final E e, final long timeout, final TimeUnit unit) {
-    throw new UnsupportedOperationException("未实现.");
-  }
-
-  /**
-   * This is a method description.
-   *
-   * <p>Another description after blank line.
-   *
-   * @author admin
    * @return boolean e.
    */
   @Override

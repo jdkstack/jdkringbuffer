@@ -1,6 +1,7 @@
 package org.jdkstack.jdkringbuffer.core;
 
 import java.util.AbstractQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -100,4 +101,19 @@ public abstract class AbstractBlockingQueue<E> extends AbstractQueue<E> {
    * @return boolean e.
    */
   public abstract boolean isFull();
+
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   * @param e e.
+   * @param timeout t.
+   * @param unit u.
+   * @return boolean e.
+   */
+  public boolean offer(final E e, final long timeout, final TimeUnit unit) {
+    throw new UnsupportedOperationException("未实现.");
+  }
 }
