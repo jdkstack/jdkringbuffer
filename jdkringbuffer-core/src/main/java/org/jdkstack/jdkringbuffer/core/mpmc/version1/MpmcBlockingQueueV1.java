@@ -1,16 +1,17 @@
 package org.jdkstack.jdkringbuffer.core.mpmc.version1;
 
+import org.jdkstack.jdkringbuffer.core.AbstractLockBlockingQueueV1;
 import org.jdkstack.jdkringbuffer.core.Constants;
 
 /**
- * This is a class description.
+ * 多生产多消费MPMC阻塞队列.
  *
- * <p>Another description after blank line.
+ * <p>线程安全处理使用CAS锁.
  *
  * @author admin
- * @param <E> e.
+ * @param <E> e .
  */
-public class MpmcBlockingQueueV1<E> extends AbstractMpmcBlockingQueueV1<E> {
+public class MpmcBlockingQueueV1<E> extends AbstractLockBlockingQueueV1<E> {
 
   /**
    * This is a method description.
