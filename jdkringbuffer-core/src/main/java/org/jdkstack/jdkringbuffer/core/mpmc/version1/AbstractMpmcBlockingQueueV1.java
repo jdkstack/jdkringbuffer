@@ -12,6 +12,14 @@ import org.jdkstack.jdkringbuffer.core.AbstractLockBlockingQueueV1;
  */
 public abstract class AbstractMpmcBlockingQueueV1<E> extends AbstractLockBlockingQueueV1<E> {
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   * @param capacity e.
+   */
   protected AbstractMpmcBlockingQueueV1(final int capacity) {
     super(capacity);
   }
