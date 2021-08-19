@@ -1,4 +1,6 @@
-package org.jdkstack.jdkringbuffer.core;
+package org.jdkstack.jdkringbuffer.core.version2;
+
+import org.jdkstack.jdkringbuffer.core.Constants;
 
 /**
  * This is a class description.

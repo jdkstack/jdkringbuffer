@@ -109,6 +109,14 @@ public abstract class AbstractBlockingQueue<E> extends AbstractQueue<E> {
     throw new UnsupportedOperationException("未实现.");
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   * @return boolean e.
+   */
   public final boolean isFull() {
     final int queueStart = tail.get() - capacity;
     return head.get() == queueStart;
@@ -122,6 +130,7 @@ public abstract class AbstractBlockingQueue<E> extends AbstractQueue<E> {
    * @author admin
    * @return Iterator E e.
    */
+  @Override
   public Iterator<E> iterator() {
     throw new UnsupportedOperationException("未实现.");
   }
@@ -144,6 +153,7 @@ public abstract class AbstractBlockingQueue<E> extends AbstractQueue<E> {
    * <p>Another description after blank line.
    *
    * @author admin
+   * @param c c.
    * @return int e.
    */
   public int drainTo(final Collection<? super E> c) {
@@ -156,6 +166,8 @@ public abstract class AbstractBlockingQueue<E> extends AbstractQueue<E> {
    * <p>Another description after blank line.
    *
    * @author admin
+   * @param c c.
+   * @param maxElements maxElements.
    * @return int e.
    */
   public int drainTo(final Collection<? super E> c, final int maxElements) {

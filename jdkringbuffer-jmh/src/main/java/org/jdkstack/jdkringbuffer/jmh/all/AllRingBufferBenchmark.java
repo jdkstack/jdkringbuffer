@@ -6,8 +6,8 @@ import com.conversantmedia.util.concurrent.SpinPolicy;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
-import org.jdkstack.jdkringbuffer.core.JdkRingBufferBlockingQueue;
-import org.jdkstack.jdkringbuffer.core.JdkRingBufferBlockingQueueV2;
+import org.jdkstack.jdkringbuffer.core.version1.JdkRingBufferBlockingQueueV1;
+import org.jdkstack.jdkringbuffer.core.version2.JdkRingBufferBlockingQueueV2;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Level;
@@ -36,9 +36,10 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 @Warmup(iterations = 5, time = 1)
 @Measurement(iterations = 5, time = 1)
 public class AllRingBufferBenchmark {
-  private final BlockingQueue<String> queue1 = new JdkRingBufferBlockingQueue<>();
+  private final BlockingQueue<String> queue1 = new JdkRingBufferBlockingQueueV1<>();
   private final BlockingQueue<String> queue2 = new ArrayBlockingQueue<>(1024);
-  private final BlockingQueue<String> queue3 = new DisruptorBlockingQueue<>(1024, SpinPolicy.SPINNING);
+  private final BlockingQueue<String> queue3 =
+      new DisruptorBlockingQueue<>(1024, SpinPolicy.SPINNING);
   private final BlockingQueue<String> queue4 = new JdkRingBufferBlockingQueueV2<>(1024);
   private final BlockingQueue<String> queue5 = new MPMCBlockingQueue<>(1024, SpinPolicy.SPINNING);
 
@@ -50,11 +51,11 @@ public class AllRingBufferBenchmark {
    * @author admin
    * @param args args.
    */
-  public static void main(String... args) {
+  public static void main(final String... args) {
     Options opt =
         new OptionsBuilder()
             .include(AllRingBufferBenchmark.class.getSimpleName())
-            .threads(10)
+            .threads(1)
             .forks(1)
             .build();
     try {

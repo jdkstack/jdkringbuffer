@@ -1,10 +1,12 @@
-package org.jdkstack.jdkringbuffer.core;
+package org.jdkstack.jdkringbuffer.core.version1;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.LockSupport;
 import org.jdkstack.jdkringbuffer.api.RingBufferBlockingQueue;
+import org.jdkstack.jdkringbuffer.core.AbstractBlockingQueue;
+import org.jdkstack.jdkringbuffer.core.Constants;
 
 /**
  * This is a class description.
@@ -14,7 +16,7 @@ import org.jdkstack.jdkringbuffer.api.RingBufferBlockingQueue;
  * @author admin
  * @param <E> e .
  */
-public abstract class AbstractRingBufferBlockingQueue<E> extends AbstractBlockingQueue<E>
+public abstract class AbstractRingBufferBlockingQueueV1<E> extends AbstractBlockingQueue<E>
     implements BlockingQueue<E>, RingBufferBlockingQueue {
   /** 环形数组. */
   private final E[] ringBuffer;
@@ -23,12 +25,12 @@ public abstract class AbstractRingBufferBlockingQueue<E> extends AbstractBlockin
   /** 环形数组出队时,是否被其他线程抢先获取了值. */
   private final AtomicInteger headLock = new AtomicInteger(0);
 
-  protected AbstractRingBufferBlockingQueue() {
+  protected AbstractRingBufferBlockingQueueV1() {
     this(Constants.CAPACITY);
   }
 
   @SuppressWarnings("unchecked")
-  protected AbstractRingBufferBlockingQueue(final int capacity) {
+  protected AbstractRingBufferBlockingQueueV1(final int capacity) {
     super(capacity, capacity - 1);
     // jdk 泛型数组,会有检查异常,但不影响什么,用unchecked关闭检查.
     this.ringBuffer = (E[]) new Object[capacity];

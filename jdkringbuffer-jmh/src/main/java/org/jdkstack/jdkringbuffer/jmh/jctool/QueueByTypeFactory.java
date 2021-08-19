@@ -15,6 +15,13 @@ import org.jctools.queues.SpscArrayQueue;
 import org.jctools.queues.SpscGrowableArrayQueue;
 import org.jctools.queues.SpscLinkedQueue;
 
+/**
+ * This is a class description.
+ *
+ * <p>Another description after blank line.
+ *
+ * @author admin
+ */
 @SuppressWarnings("all")
 public final class QueueByTypeFactory {
   public static final int QUEUE_CAPACITY = 1 << Integer.getInteger("pow2.capacity", 17);

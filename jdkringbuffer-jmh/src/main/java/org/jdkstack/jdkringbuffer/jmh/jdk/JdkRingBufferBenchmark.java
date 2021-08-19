@@ -2,8 +2,8 @@ package org.jdkstack.jdkringbuffer.jmh.jdk;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
-import org.jdkstack.jdkringbuffer.core.JdkRingBufferBlockingQueue;
-import org.jdkstack.jdkringbuffer.core.JdkRingBufferBlockingQueueV2;
+import org.jdkstack.jdkringbuffer.core.version1.JdkRingBufferBlockingQueueV1;
+import org.jdkstack.jdkringbuffer.core.version2.JdkRingBufferBlockingQueueV2;
 import org.jdkstack.jdkringbuffer.jmh.all.StudyJuliRuntimeException;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -33,7 +33,7 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 @Warmup(iterations = 5, time = 1)
 @Measurement(iterations = 5, time = 1)
 public class JdkRingBufferBenchmark {
-  private final BlockingQueue<String> queue = new JdkRingBufferBlockingQueue<>();
+  private final BlockingQueue<String> queue = new JdkRingBufferBlockingQueueV1<>();
   private final BlockingQueue<String> queue1 = new JdkRingBufferBlockingQueueV2<>(1024);
 
   /**
