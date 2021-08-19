@@ -1,7 +1,7 @@
 package org.jdkstack.jdkringbuffer.examples;
 
 import org.jdkstack.jdkringbuffer.core.Constants;
-import org.jdkstack.jdkringbuffer.core.version2.JdkRingBufferBlockingQueueV2;
+import org.jdkstack.jdkringbuffer.core.mpmc.version2.MpmcBlockingQueueV2;
 
 /**
  * This is a class description.
@@ -26,7 +26,7 @@ public final class Examples {
    * @param args args.
    */
   public static void main(final String... args) {
-    final JdkRingBufferBlockingQueueV2<InfoEvent> queue = new JdkRingBufferBlockingQueueV2<>(1024);
+    final MpmcBlockingQueueV2<InfoEvent> queue = new MpmcBlockingQueueV2<>(1024);
     new Thread(
             () -> {
               final long startTime = System.currentTimeMillis();

@@ -1,16 +1,17 @@
-package org.jdkstack.jdkringbuffer.core.version1;
+package org.jdkstack.jdkringbuffer.core.mpmc.version1;
 
+import org.jdkstack.jdkringbuffer.core.AbstractLockBlockingQueueV1;
 import org.jdkstack.jdkringbuffer.core.Constants;
 
 /**
- * This is a class description.
+ * 多生产多消费MPMC阻塞队列.
  *
- * <p>Another description after blank line.
+ * <p>线程安全处理使用CAS锁.
  *
  * @author admin
- * @param <E> e.
+ * @param <E> e .
  */
-public class JdkRingBufferBlockingQueueV1<E> extends AbstractRingBufferBlockingQueueV1<E> {
+public class MpmcBlockingQueueV1<E> extends AbstractLockBlockingQueueV1<E> {
 
   /**
    * This is a method description.
@@ -19,7 +20,7 @@ public class JdkRingBufferBlockingQueueV1<E> extends AbstractRingBufferBlockingQ
    *
    * @author admin
    */
-  public JdkRingBufferBlockingQueueV1() {
+  public MpmcBlockingQueueV1() {
     super(Constants.CAPACITY);
   }
 
@@ -31,7 +32,7 @@ public class JdkRingBufferBlockingQueueV1<E> extends AbstractRingBufferBlockingQ
    * @author admin
    * @param capacity capacity.
    */
-  public JdkRingBufferBlockingQueueV1(final int capacity) {
+  public MpmcBlockingQueueV1(final int capacity) {
     super(capacity);
   }
 }

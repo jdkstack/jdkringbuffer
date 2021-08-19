@@ -1,24 +1,14 @@
-package org.jdkstack.jdkringbuffer.core.version2;
+package org.jdkstack.jdkringbuffer.core;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.LockSupport;
 import org.jdkstack.jdkringbuffer.api.RingBufferBlockingQueue;
-import org.jdkstack.jdkringbuffer.core.AbstractBlockingQueue;
-import org.jdkstack.jdkringbuffer.core.Constants;
 
-/**
- * This is a class description.
- *
- * <p>Another description after blank line.
- *
- * @author admin
- * @param <E> e .
- */
-public abstract class AbstractRingBufferBlockingQueueV2<E> extends AbstractBlockingQueue<E>
+public abstract class AbstractLockBlockingQueueV2<E> extends AbstractBlockingQueue<E>
     implements BlockingQueue<E>, RingBufferBlockingQueue {
   /** 环形数组. */
-  private final Entry<E>[] buffer;
+  protected final Entry<E>[] buffer;
 
   /**
    * This is a method description.
@@ -27,7 +17,7 @@ public abstract class AbstractRingBufferBlockingQueueV2<E> extends AbstractBlock
    *
    * @author admin
    */
-  protected AbstractRingBufferBlockingQueueV2() {
+  protected AbstractLockBlockingQueueV2() {
     this(Constants.CAPACITY);
   }
 
@@ -40,7 +30,7 @@ public abstract class AbstractRingBufferBlockingQueueV2<E> extends AbstractBlock
    * @param capacity e.
    */
   @SuppressWarnings("unchecked")
-  protected AbstractRingBufferBlockingQueueV2(final int capacity) {
+  protected AbstractLockBlockingQueueV2(final int capacity) {
     super(capacity, capacity - 1);
     buffer = new Entry[capacity];
     for (int i = 0; i < capacity; i++) {
@@ -117,17 +107,17 @@ public abstract class AbstractRingBufferBlockingQueueV2<E> extends AbstractBlock
   }
 
   @Override
-  public final E peek() {
+  public E peek() {
     return buffer[head.get() & index].getEntry();
   }
 
   @Override
-  public final int size() {
+  public int size() {
     return Math.max(tail.get() - head.get(), 0);
   }
 
   @Override
-  public final boolean isEmpty() {
+  public boolean isEmpty() {
     return head.get() == tail.get();
   }
 }
