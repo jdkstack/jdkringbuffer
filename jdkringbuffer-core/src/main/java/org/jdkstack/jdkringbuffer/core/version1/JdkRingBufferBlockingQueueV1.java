@@ -1,7 +1,6 @@
 package org.jdkstack.jdkringbuffer.core.version1;
 
 import org.jdkstack.jdkringbuffer.core.Constants;
-import org.jdkstack.jdkringbuffer.core.version1.AbstractRingBufferBlockingQueueV1;
 
 /**
  * This is a class description.
