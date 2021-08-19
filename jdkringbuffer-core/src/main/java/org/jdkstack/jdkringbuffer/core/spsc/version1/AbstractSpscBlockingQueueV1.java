@@ -36,8 +36,8 @@ public abstract class AbstractSpscBlockingQueueV1<E> extends AbstractLockBlockin
       // 向环形数组设置元素,取模后向对应的下标设置元素.
       final int tailSlot = tailSeq & index;
       this.ringBuffer[tailSlot] = e;
-      this.tail.getAndIncrement();
       flag = true;
+      this.tail.getAndIncrement();
     }
     return flag;
   }

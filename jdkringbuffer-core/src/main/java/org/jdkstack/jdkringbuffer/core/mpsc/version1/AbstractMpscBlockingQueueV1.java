@@ -30,14 +30,14 @@ public abstract class AbstractMpscBlockingQueueV1<E> extends AbstractLockBlockin
     E e = null;
     // 检查队列中是否有元素.   检查是否被其他线程修改,如果返回true,则没有修改,可以更新值.
     if (0 > headSeq || this.tail.get() > headSeq) {
+      // poll计数.
+      this.head.getAndIncrement();
       // 获取环形数组索引位置.
       final int bufferIndex = headSeq & index;
       // 根据索引位置获取元素.
       e = this.ringBuffer[bufferIndex];
       // 将索引位置设置为空.
       this.ringBuffer[bufferIndex] = null;
-      // poll计数.
-      this.head.getAndIncrement();
     }
     return e;
   }

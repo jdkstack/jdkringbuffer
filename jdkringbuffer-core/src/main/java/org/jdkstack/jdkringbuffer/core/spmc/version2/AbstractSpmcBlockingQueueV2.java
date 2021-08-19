@@ -42,10 +42,10 @@ public abstract class AbstractSpmcBlockingQueueV2<E> extends AbstractLockBlockin
     final int dif = seq - tailSeq;
     boolean flag = false;
     if (dif == 0) {
-      this.tail.getAndIncrement();
       cell.setEntry(e);
       cell.setSeq(tailSeq + 1);
       flag = true;
+      this.tail.getAndIncrement();
     }
     return flag;
   }
