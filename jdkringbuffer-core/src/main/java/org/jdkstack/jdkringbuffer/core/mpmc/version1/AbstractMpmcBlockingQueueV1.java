@@ -1,4 +1,4 @@
-package org.jdkstack.jdkringbuffer.core.version1;
+package org.jdkstack.jdkringbuffer.core.mpmc.version1;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -9,14 +9,14 @@ import org.jdkstack.jdkringbuffer.core.AbstractBlockingQueue;
 import org.jdkstack.jdkringbuffer.core.Constants;
 
 /**
- * This is a class description.
+ * 多生产多消费MPMC阻塞队列.
  *
- * <p>Another description after blank line.
+ * <p>线程安全处理使用CAS锁.
  *
  * @author admin
  * @param <E> e .
  */
-public abstract class AbstractRingBufferBlockingQueueV1<E> extends AbstractBlockingQueue<E>
+public abstract class AbstractMpmcBlockingQueueV1<E> extends AbstractBlockingQueue<E>
     implements BlockingQueue<E>, RingBufferBlockingQueue {
   /** 环形数组. */
   private final E[] ringBuffer;
@@ -25,12 +25,12 @@ public abstract class AbstractRingBufferBlockingQueueV1<E> extends AbstractBlock
   /** 环形数组出队时,是否被其他线程抢先获取了值. */
   private final AtomicInteger headLock = new AtomicInteger(0);
 
-  protected AbstractRingBufferBlockingQueueV1() {
+  protected AbstractMpmcBlockingQueueV1() {
     this(Constants.CAPACITY);
   }
 
   @SuppressWarnings("unchecked")
-  protected AbstractRingBufferBlockingQueueV1(final int capacity) {
+  protected AbstractMpmcBlockingQueueV1(final int capacity) {
     super(capacity, capacity - 1);
     // jdk 泛型数组,会有检查异常,但不影响什么,用unchecked关闭检查.
     this.ringBuffer = (E[]) new Object[capacity];
@@ -61,6 +61,8 @@ public abstract class AbstractRingBufferBlockingQueueV1<E> extends AbstractBlock
         flag = true;
       } else {
         // 如果被占用,暂停1nanos.
+        // https://blogs.oracle.com/dave/lightweight-contention-
+        // management-for-efficient-compare-and-swap-operations
         LockSupport.parkNanos(1L);
       }
     }

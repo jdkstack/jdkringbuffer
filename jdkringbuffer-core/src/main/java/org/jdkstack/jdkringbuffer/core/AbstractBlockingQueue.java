@@ -5,9 +5,10 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.LongAdder;
 
 /**
- * This is a class description.
+ * 阻塞队列核心.
  *
  * <p>Another description after blank line.
  *
@@ -30,7 +31,7 @@ public abstract class AbstractBlockingQueue<E> extends AbstractQueue<E> {
   }
 
   /**
-   * This is a method description.
+   * 阻塞方法消费元素.
    *
    * <p>Another description after blank line.
    *
@@ -70,7 +71,7 @@ public abstract class AbstractBlockingQueue<E> extends AbstractQueue<E> {
   }
 
   /**
-   * This is a method description.
+   * 阻塞方法放入元素.
    *
    * <p>Another description after blank line.
    *

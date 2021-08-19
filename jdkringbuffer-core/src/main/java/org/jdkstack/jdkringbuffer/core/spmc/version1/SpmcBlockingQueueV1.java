@@ -1,4 +1,4 @@
-package org.jdkstack.jdkringbuffer.core.version2;
+package org.jdkstack.jdkringbuffer.core.spmc.version1;
 
 import org.jdkstack.jdkringbuffer.core.Constants;
 
@@ -10,7 +10,7 @@ import org.jdkstack.jdkringbuffer.core.Constants;
  * @author admin
  * @param <E> e.
  */
-public class JdkRingBufferBlockingQueueV2<E> extends AbstractRingBufferBlockingQueueV2<E> {
+public class SpmcBlockingQueueV1<E> extends AbstractSpmcBlockingQueueV1<E> {
 
   /**
    * This is a method description.
@@ -19,7 +19,7 @@ public class JdkRingBufferBlockingQueueV2<E> extends AbstractRingBufferBlockingQ
    *
    * @author admin
    */
-  public JdkRingBufferBlockingQueueV2() {
+  public SpmcBlockingQueueV1() {
     super(Constants.CAPACITY);
   }
 
@@ -29,9 +29,9 @@ public class JdkRingBufferBlockingQueueV2<E> extends AbstractRingBufferBlockingQ
    * <p>Another description after blank line.
    *
    * @author admin
-   * @param capacity e.
+   * @param capacity capacity.
    */
-  public JdkRingBufferBlockingQueueV2(final int capacity) {
+  public SpmcBlockingQueueV1(final int capacity) {
     super(capacity);
   }
 }

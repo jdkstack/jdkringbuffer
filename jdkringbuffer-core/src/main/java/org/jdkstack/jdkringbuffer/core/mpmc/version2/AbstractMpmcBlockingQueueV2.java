@@ -1,4 +1,4 @@
-package org.jdkstack.jdkringbuffer.core.version2;
+package org.jdkstack.jdkringbuffer.core.mpmc.version2;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -8,14 +8,14 @@ import org.jdkstack.jdkringbuffer.core.AbstractBlockingQueue;
 import org.jdkstack.jdkringbuffer.core.Constants;
 
 /**
- * This is a class description.
+ * 多生产多消费MPMC阻塞队列.
  *
- * <p>Another description after blank line.
+ * <p>线程安全处理使用CAS锁.
  *
  * @author admin
  * @param <E> e .
  */
-public abstract class AbstractRingBufferBlockingQueueV2<E> extends AbstractBlockingQueue<E>
+public abstract class AbstractMpmcBlockingQueueV2<E> extends AbstractBlockingQueue<E>
     implements BlockingQueue<E>, RingBufferBlockingQueue {
   /** 环形数组. */
   private final Entry<E>[] buffer;
@@ -27,7 +27,7 @@ public abstract class AbstractRingBufferBlockingQueueV2<E> extends AbstractBlock
    *
    * @author admin
    */
-  protected AbstractRingBufferBlockingQueueV2() {
+  protected AbstractMpmcBlockingQueueV2() {
     this(Constants.CAPACITY);
   }
 
@@ -40,7 +40,7 @@ public abstract class AbstractRingBufferBlockingQueueV2<E> extends AbstractBlock
    * @param capacity e.
    */
   @SuppressWarnings("unchecked")
-  protected AbstractRingBufferBlockingQueueV2(final int capacity) {
+  protected AbstractMpmcBlockingQueueV2(final int capacity) {
     super(capacity, capacity - 1);
     buffer = new Entry[capacity];
     for (int i = 0; i < capacity; i++) {
