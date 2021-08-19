@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit;
 import org.jdkstack.jdkringbuffer.api.RingBufferBlockingQueue;
 import org.jdkstack.jdkringbuffer.core.AbstractBlockingQueue;
 import org.jdkstack.jdkringbuffer.core.Constants;
-import org.jdkstack.jdkringbuffer.core.mpmc.version2.Entry;
+import org.jdkstack.jdkringbuffer.core.Entry;
 
 /**
  * 单生产单消费SPSC阻塞队列..

@@ -6,6 +6,7 @@ import java.util.concurrent.locks.LockSupport;
 import org.jdkstack.jdkringbuffer.api.RingBufferBlockingQueue;
 import org.jdkstack.jdkringbuffer.core.AbstractBlockingQueue;
 import org.jdkstack.jdkringbuffer.core.Constants;
+import org.jdkstack.jdkringbuffer.core.Entry;
 
 /**
  * 多生产多消费MPMC阻塞队列.

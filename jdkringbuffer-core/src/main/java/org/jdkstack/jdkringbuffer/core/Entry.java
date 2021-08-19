@@ -1,4 +1,4 @@
-package org.jdkstack.jdkringbuffer.core.mpmc.version2;
+package org.jdkstack.jdkringbuffer.core;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import jdk.internal.vm.annotation.Contended;
