@@ -1,4 +1,4 @@
-package org.jdkstack.jdkringbuffer.core;
+package org.jdkstack.jdkringbuffer.core.version2;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import jdk.internal.vm.annotation.Contended;

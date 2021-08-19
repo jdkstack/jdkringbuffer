@@ -17,6 +17,13 @@ import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
+/**
+ * This is a class description.
+ *
+ * <p>Another description after blank line.
+ *
+ * @author admin
+ */
 @SuppressWarnings("all")
 @State(Scope.Benchmark)
 @Warmup(iterations = 5, time = 1)

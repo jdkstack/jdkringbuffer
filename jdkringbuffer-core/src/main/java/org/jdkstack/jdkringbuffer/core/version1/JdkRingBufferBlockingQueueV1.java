@@ -1,4 +1,7 @@
-package org.jdkstack.jdkringbuffer.core;
+package org.jdkstack.jdkringbuffer.core.version1;
+
+import org.jdkstack.jdkringbuffer.core.Constants;
+import org.jdkstack.jdkringbuffer.core.version1.AbstractRingBufferBlockingQueueV1;
 
 /**
  * This is a class description.
@@ -8,7 +11,7 @@ package org.jdkstack.jdkringbuffer.core;
  * @author admin
  * @param <E> e.
  */
-public class JdkRingBufferBlockingQueue<E> extends AbstractRingBufferBlockingQueue<E> {
+public class JdkRingBufferBlockingQueueV1<E> extends AbstractRingBufferBlockingQueueV1<E> {
 
   /**
    * This is a method description.
@@ -17,7 +20,7 @@ public class JdkRingBufferBlockingQueue<E> extends AbstractRingBufferBlockingQue
    *
    * @author admin
    */
-  public JdkRingBufferBlockingQueue() {
+  public JdkRingBufferBlockingQueueV1() {
     super(Constants.CAPACITY);
   }
 
@@ -29,7 +32,7 @@ public class JdkRingBufferBlockingQueue<E> extends AbstractRingBufferBlockingQue
    * @author admin
    * @param capacity capacity.
    */
-  public JdkRingBufferBlockingQueue(final int capacity) {
+  public JdkRingBufferBlockingQueueV1(final int capacity) {
     super(capacity);
   }
 }

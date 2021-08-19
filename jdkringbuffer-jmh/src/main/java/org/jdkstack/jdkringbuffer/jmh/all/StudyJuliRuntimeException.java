@@ -9,22 +9,70 @@ public class StudyJuliRuntimeException extends RuntimeException {
 
   private static final long serialVersionUID = 1;
 
-  public StudyJuliRuntimeException() {}
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   */
+  public StudyJuliRuntimeException() {
+    //
+  }
 
-  public StudyJuliRuntimeException(String message) {
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   * @param message message.
+   */
+  public StudyJuliRuntimeException(final String message) {
     super(message);
   }
 
-  public StudyJuliRuntimeException(String message, Throwable cause) {
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   * @param cause cause.
+   * @param message message.
+   */
+  public StudyJuliRuntimeException(final String message, final Throwable cause) {
     super(message, cause);
   }
 
-  public StudyJuliRuntimeException(Throwable cause) {
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   * @param cause cause.
+   */
+  public StudyJuliRuntimeException(final Throwable cause) {
     super(cause);
   }
 
+  /**
+   * This is a method description.
+   *
+   * <p>Another description after blank line.
+   *
+   * @author admin
+   * @param cause cause.
+   * @param message message.
+   * @param enableSuppression enableSuppression.
+   * @param writableStackTrace writableStackTrace.
+   */
   public StudyJuliRuntimeException(
-      String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+      final String message,
+      final Throwable cause,
+      final boolean enableSuppression,
+      final boolean writableStackTrace) {
     super(message, cause, enableSuppression, writableStackTrace);
   }
 }

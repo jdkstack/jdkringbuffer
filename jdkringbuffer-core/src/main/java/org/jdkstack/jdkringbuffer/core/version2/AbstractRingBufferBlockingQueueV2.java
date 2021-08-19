@@ -1,9 +1,11 @@
-package org.jdkstack.jdkringbuffer.core;
+package org.jdkstack.jdkringbuffer.core.version2;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.LockSupport;
 import org.jdkstack.jdkringbuffer.api.RingBufferBlockingQueue;
+import org.jdkstack.jdkringbuffer.core.AbstractBlockingQueue;
+import org.jdkstack.jdkringbuffer.core.Constants;
 
 /**
  * This is a class description.
