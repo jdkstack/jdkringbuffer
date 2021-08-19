@@ -1,4 +1,4 @@
-package org.jdkstack.jdkringbuffer.core.spsc.version4;
+package org.jdkstack.jdkringbuffer.core.spsc.version1;
 
 import org.jdkstack.jdkringbuffer.core.Constants;
 
@@ -10,7 +10,7 @@ import org.jdkstack.jdkringbuffer.core.Constants;
  * @author admin
  * @param <E> e.
  */
-public class SpscBlockingQueueV2<E> extends AbstractSpscBlockingQueueV2<E> {
+public class SpscBlockingQueueV1<E> extends AbstractSpscBlockingQueueV1<E> {
 
   /**
    * This is a method description.
@@ -19,7 +19,7 @@ public class SpscBlockingQueueV2<E> extends AbstractSpscBlockingQueueV2<E> {
    *
    * @author admin
    */
-  public SpscBlockingQueueV2() {
+  public SpscBlockingQueueV1() {
     super(Constants.CAPACITY);
   }
 
@@ -31,7 +31,7 @@ public class SpscBlockingQueueV2<E> extends AbstractSpscBlockingQueueV2<E> {
    * @author admin
    * @param capacity capacity.
    */
-  public SpscBlockingQueueV2(final int capacity) {
+  public SpscBlockingQueueV1(final int capacity) {
     super(capacity);
   }
 }

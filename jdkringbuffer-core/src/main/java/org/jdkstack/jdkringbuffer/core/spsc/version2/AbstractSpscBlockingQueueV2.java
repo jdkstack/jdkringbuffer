@@ -1,4 +1,4 @@
-package org.jdkstack.jdkringbuffer.core.spsc.version3;
+package org.jdkstack.jdkringbuffer.core.spsc.version2;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -15,7 +15,7 @@ import org.jdkstack.jdkringbuffer.core.Entry;
  * @author admin
  * @param <E> e .
  */
-public abstract class AbstractSpscBlockingQueueV1<E> extends AbstractBlockingQueue<E>
+public abstract class AbstractSpscBlockingQueueV2<E> extends AbstractBlockingQueue<E>
     implements BlockingQueue<E>, RingBufferBlockingQueue {
   /** 环形数组. */
   private final Entry<E>[] buffer;
@@ -27,7 +27,7 @@ public abstract class AbstractSpscBlockingQueueV1<E> extends AbstractBlockingQue
    *
    * @author admin
    */
-  protected AbstractSpscBlockingQueueV1() {
+  protected AbstractSpscBlockingQueueV2() {
     this(Constants.CAPACITY);
   }
 
@@ -40,7 +40,7 @@ public abstract class AbstractSpscBlockingQueueV1<E> extends AbstractBlockingQue
    * @param capacity e.
    */
   @SuppressWarnings("unchecked")
-  protected AbstractSpscBlockingQueueV1(final int capacity) {
+  protected AbstractSpscBlockingQueueV2(final int capacity) {
     super(capacity, capacity - 1);
     buffer = new Entry[capacity];
     for (int i = 0; i < capacity; i++) {
