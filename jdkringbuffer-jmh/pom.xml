@@ -10,7 +10,7 @@
   </parent>
   <artifactId>jdkringbuffer-jmh</artifactId>
   <properties>
-    <jmh.version>1.33</jmh.version>
+    <jmh.version>1.35</jmh.version>
     <uberjar.name>benchmarks</uberjar.name>
   </properties>
   <dependencies>
@@ -61,7 +61,7 @@
         </configuration>
         <!-- https://maven.apache.org/plugins/maven-jar-plugin/examples/include-exclude.html-->
         <groupId>org.apache.maven.plugins</groupId>
-        <version>3.2.0</version>
+        <version>3.2.2</version>
       </plugin>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
@@ -101,7 +101,7 @@
           </execution>
         </executions>
         <groupId>org.apache.maven.plugins</groupId>
-        <version>3.2.4</version>
+        <version>3.3.0</version>
       </plugin>
     </plugins>
   </build>
