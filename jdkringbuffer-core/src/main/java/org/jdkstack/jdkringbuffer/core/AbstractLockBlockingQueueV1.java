@@ -37,26 +37,28 @@ public abstract class AbstractLockBlockingQueueV1<E> extends AbstractBlockingQue
    */
   @Override
   public boolean offer(final E e) {
-    // 环形数组一共设置的元素的总个数(自增+1).
-    final int tailSeq = this.tail.get();
-    final int queueStart = tailSeq - this.capacity;
-    boolean flag = false;
-    // 检查环形数组是否满了. 检查是否被其他线程修改.
-    if (0 > queueStart || this.head.get() > queueStart) {
-      if (this.tailLock.compareAndSet(tailSeq, tailSeq + 1)) {
-        // 向环形数组设置元素,取模后向对应的下标设置元素.
-        final int tailSlot = tailSeq & index;
-        this.ringBuffer[tailSlot] = e;
-        this.tail.getAndIncrement();
-        flag = true;
+    while (true) {
+      // 环形数组一共设置的元素的总个数(自增+1).
+      final int tailSeq = this.tail.get();
+      final int queueStart = tailSeq - this.capacity;
+      // 检查环形数组是否满了. 检查是否被其他线程修改.
+      if (0 > queueStart || this.head.get() > queueStart) {
+        if (this.tailLock.compareAndSet(tailSeq, tailSeq + 1)) {
+          // 向环形数组设置元素,取模后向对应的下标设置元素.
+          final int tailSlot = tailSeq & index;
+          this.ringBuffer[tailSlot] = e;
+          this.tail.getAndIncrement();
+          return true;
+        } else {
+          // 如果被占用,暂停1nanos.
+          // https://blogs.oracle.com/dave/lightweight-contention-
+          // management-for-efficient-compare-and-swap-operations
+          LockSupport.parkNanos(1L);
+        }
       } else {
-        // 如果被占用,暂停1nanos.
-        // https://blogs.oracle.com/dave/lightweight-contention-
-        // management-for-efficient-compare-and-swap-operations
-        LockSupport.parkNanos(1L);
+        return false;
       }
     }
-    return flag;
   }
 
   /**
@@ -69,24 +71,27 @@ public abstract class AbstractLockBlockingQueueV1<E> extends AbstractBlockingQue
    */
   @Override
   public E poll() {
-    final int headSeq = this.head.get();
-    E e = null;
-    // 检查队列中是否有元素.   检查是否被其他线程修改,如果返回true,则没有修改,可以更新值.
-    if (0 > headSeq || this.tail.get() > headSeq) {
-      if (this.headLock.compareAndSet(headSeq, headSeq + 1)) {
-        // 获取环形数组索引位置.
-        final int bufferIndex = headSeq & index;
-        // 根据索引位置获取元素.
-        e = this.ringBuffer[bufferIndex];
-        // 将索引位置设置为空.
-        this.ringBuffer[bufferIndex] = null;
-        // poll计数.
-        this.head.getAndIncrement();
+    while (true) {
+      final int headSeq = this.head.get();
+      // 检查队列中是否有元素.   检查是否被其他线程修改,如果返回true,则没有修改,可以更新值.
+      if (0 > headSeq || this.tail.get() > headSeq) {
+        if (this.headLock.compareAndSet(headSeq, headSeq + 1)) {
+          // 获取环形数组索引位置.
+          final int bufferIndex = headSeq & index;
+          // 根据索引位置获取元素.
+          final E e = this.ringBuffer[bufferIndex];
+          // 将索引位置设置为空.
+          this.ringBuffer[bufferIndex] = null;
+          // poll计数.
+          this.head.getAndIncrement();
+          return e;
+        } else {
+          LockSupport.parkNanos(1L);
+        }
       } else {
-        LockSupport.parkNanos(1L);
+        return null;
       }
     }
-    return e;
   }
 
   /**
