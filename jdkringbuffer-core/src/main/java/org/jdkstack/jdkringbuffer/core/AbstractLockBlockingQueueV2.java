@@ -49,21 +49,25 @@ public abstract class AbstractLockBlockingQueueV2<E> extends AbstractBlockingQue
    */
   @Override
   public boolean offer(final E e) {
-    final int tailSeq = this.tail.get();
-    final Entry<E> cell = buffer[tailSeq & index];
-    final int seq = cell.getSeq();
-    final int dif = seq - tailSeq;
-    boolean flag = false;
-    if (dif == 0) {
-      if (this.tail.compareAndSet(tailSeq, tailSeq + 1)) {
-        cell.setEntry(e);
-        cell.setSeq(tailSeq + 1);
-        flag = true;
+    int tailSeq = this.tail.get();
+    while (true) {
+      final Entry<E> cell = buffer[tailSeq & index];
+      final int seq = cell.getSeq();
+      final int dif = seq - tailSeq;
+      if (dif == 0) {
+        if (this.tail.compareAndSet(tailSeq, tailSeq + 1)) {
+          cell.setEntry(e);
+          cell.setSeq(tailSeq + 1);
+          return true;
+        } else {
+          LockSupport.parkNanos(1L);
+        }
+      } else if (dif < 0) {
+        return false;
       } else {
-        LockSupport.parkNanos(1L);
+        tailSeq = this.tail.get();
       }
     }
-    return flag;
   }
 
   /**
@@ -76,21 +80,26 @@ public abstract class AbstractLockBlockingQueueV2<E> extends AbstractBlockingQue
    */
   @Override
   public E poll() {
-    final int headSeq = this.head.get();
-    final Entry<E> cell = buffer[headSeq & index];
-    final int seq = cell.getSeq();
-    final int dif = seq - (headSeq + 1);
-    E e = null;
-    if (dif == 0) {
-      if (this.head.compareAndSet(headSeq, headSeq + 1)) {
-        e = cell.getEntry();
-        cell.setEntry(null);
-        cell.setSeq(headSeq + index + 1);
+    int headSeq = this.head.get();
+    while (true) {
+      final Entry<E> cell = buffer[headSeq & index];
+      final int seq = cell.getSeq();
+      final int dif = seq - (headSeq + 1);
+      if (dif == 0) {
+        if (this.head.compareAndSet(headSeq, headSeq + 1)) {
+          E e = cell.getEntry();
+          cell.setEntry(null);
+          cell.setSeq(headSeq + index + 1);
+          return e;
+        } else {
+          LockSupport.parkNanos(1L);
+        }
+      } else if (dif < 0) {
+        return null;
       } else {
-        LockSupport.parkNanos(1L);
+        headSeq = this.head.get();
       }
     }
-    return e;
   }
 
   /**
